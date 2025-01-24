@@ -1,0 +1,64 @@
+using System;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class GameManager : MonoBehaviour
+{
+	public enum GameState
+	{
+		BEFORE_PLAY,
+		PLAY,
+		PAUSE,
+		LOST
+	}
+
+	public static GameManager instance;
+
+	public void Start()
+	{
+		if(instance != null) 
+			Destroy(instance.gameObject);
+		
+		instance = this;
+		ChangeGameState(GameState.BEFORE_PLAY);
+	}
+
+	private void Update()
+	{
+		if (currentGameState == GameState.BEFORE_PLAY)
+		{
+			if (Input.GetKeyDown(KeyCode.Space))
+			{
+				ChangeGameState(GameState.PLAY);
+			}
+		}
+
+		// Restart
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			SceneManager.LoadScene(0);
+		}
+	}
+
+	public GameState currentGameState;
+
+	public void ChangeGameState(GameState newGameState)
+	{
+		currentGameState = newGameState;
+		Time.timeScale = (currentGameState == GameState.PLAY) ? 1 : 0;
+	}
+
+	public void StartGame()
+	{
+		currentGameState = GameState.PLAY;
+		Time.timeScale = 1;
+	}
+
+	public void Lose()
+	{
+		// show losing UI
+		currentGameState = GameState.LOST;
+		Time.timeScale = 0;
+	}
+
+}
