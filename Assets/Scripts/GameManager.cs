@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
 	{
 		// show losing UI
 		currentGameState = GameState.LOST;
+		ScoreManager.instance.ApplyHighscore();
 		Time.timeScale = 0;
 	}
 
