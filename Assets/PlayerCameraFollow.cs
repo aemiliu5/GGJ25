@@ -17,8 +17,9 @@ public class PlayerCameraFollow : MonoBehaviour
 		camera = GetComponent<CinemachineCamera>();
 	}
 
-	private void Update()
-	{
+	private void Update() {
+		if (playerBody == null) return;
+
 		if (playerBody.linearVelocityY > followVelocitySensitivity)
 			timer = 0;
 		

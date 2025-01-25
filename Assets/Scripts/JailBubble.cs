@@ -35,7 +35,7 @@ public class JailBubble : MonoBehaviour {
         }
 
         if (_jailCounter >= jailBreakCounter) {
-            PlayerController.instance.Jump();
+            PlayerController.instance.JailJump();
 
             ScoreManager.instance.AddScore(10);
             ScoreManager.instance.AddStreak();

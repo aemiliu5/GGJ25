@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
 	public float horizontalSpeed;
 	public float jumpForce;
+	[SerializeField] private float jailJumpForce = 12;
 
 	public float leftBound;
 	public float rightBound;
@@ -61,8 +62,13 @@ public class PlayerController : MonoBehaviour
 		rb.linearVelocityY = 0;
 		rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
 	}
+    public void JailJump() {
+        anim.SetTrigger("col");
+        rb.linearVelocityY = 0;
+        rb.AddForce(new Vector2(0, jailJumpForce), ForceMode2D.Impulse);
+    }
 
-	public void InitialJump()
+    public void InitialJump()
 	{
 		Debug.Log("Initial Jump called!");
 		anim.SetTrigger("Initial_Jump");
