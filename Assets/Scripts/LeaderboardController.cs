@@ -24,8 +24,6 @@ namespace Assets.Scripts {
             _playerData = upcomingData;
             _playerData.ForEach(data => Debug.Log(data.PlayerName));
             ConstructObject();
-
-            gameObject.SetActive(false);
         }
 
         private void ConstructObject() {
