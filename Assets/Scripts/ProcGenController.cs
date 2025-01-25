@@ -15,6 +15,12 @@ public class ProcGenController : MonoBehaviour
     [Range(1, 300)] 
     [SerializeField]
     private int iterations = 50;
+
+    [Tooltip("Player's current position. Used for spawning the balls correctly.")]
+    [SerializeField] private Transform playerPos;
+
+    [Tooltip("Margin to spawn the infinite bubbles in the pool")] 
+    [SerializeField] private float infiniteMargin = 2f;
     
     [Tooltip("Minimum height difference that will be added from one bubble to another.")]
     [SerializeField] private float minYOffset = 2.7f;
@@ -34,33 +40,56 @@ public class ProcGenController : MonoBehaviour
     [Tooltip("Maximum height difference that will be added from one bubble to another.")]
     [SerializeField] private float maxRadius = 0.35f;
 
-    private PoolManager _poolManager;
+    [SerializeField] 
+    private float MaxSpawnRadiusProximity = 5f;
 
-    private List<string> _poolNames = new List<string>() { "BubbleManager", "JailBubblePool", "DeathBubblePool", "YarnBubblePool" };
-    
+    private PoolManager _poolManager;
+    private float _maxY;
+    private bool _isGenerating = false;
+
+    private readonly List<string> _poolNames = new List<string>() { "BubbleManager", "JailBubblePool", "DeathBubblePool", "YarnBubblePool" };
+
     private void Start()
     {
         CheckForInvalidValues();
 
         _poolManager = FindObjectsByType<PoolManager>(FindObjectsSortMode.None).First();
+        InitializeBubbles();
+    }
+
+    private void Update() 
+    {
+        if (Math.Abs(playerPos.position.y - _maxY) <= MaxSpawnRadiusProximity && !_isGenerating)
+        {
+            Debug.Log("GOT TO THE TOP! Reloading bubbles");
+
+            var initialIteration = (int) Math.Ceiling(maxYOffset + _maxY + infiniteMargin);
+            Debug.Log($"NEW ITERATIONS WILL START FROM: {initialIteration}");
+            Debug.Log($"Which means that it will start from {Random.Range(minYOffset, maxYOffset) * initialIteration}");
+            
+            InitializeBubbles(initialIteration: initialIteration);
+        }
+    }
+
+    private void InitializeBubbles(int initialIteration = 0)
+    {
         float previousXValue = -999;
+        _isGenerating = true;
         
-        for (var i = 0; i < iterations; i++)
+        for (var i = initialIteration; i < iterations + initialIteration; i++)
         {
             var xValue = Random.Range(minXValue, maxXValue);
-            var yValue = Random.Range(minYOffset, maxYOffset);
+            var yValue = Random.Range(minYOffset, maxYOffset) * i;
             var radius = Random.Range(minRadius, maxRadius);
 
-            while (i != 0 && (Math.Abs(previousXValue - xValue) > 3.5f || Math.Abs(previousXValue - xValue) < 1f))
+            while (i != initialIteration && (Math.Abs(previousXValue - xValue) > 3.5f || Math.Abs(previousXValue - xValue) < 1f))
             {
                 xValue = Random.Range(minXValue, maxXValue);
             }
             
-            Debug.Log($"[{i}]: The delta between the two offsets is: {Math.Abs(previousXValue - xValue)}.");
-
             int maxRange = 4;
             int rndGenIndex = Random.Range(0, maxRange);
-            Vector2 position = new Vector2(xValue, yValue * i);
+            Vector2 position = new Vector2(xValue, yValue);
             string poolName = _poolNames[rndGenIndex];
 
             var obj = _poolManager.RetrieveFromPool(poolName, position);
@@ -71,7 +100,12 @@ public class ProcGenController : MonoBehaviour
                 obj.transform.localScale = new Vector3(radius * multiplier, radius * multiplier, 0);
 
             previousXValue = xValue;
+
+            if (_maxY <= yValue)
+                _maxY = yValue;
         }
+
+        _isGenerating = false;
     }
 
     private void CheckForInvalidValues()
