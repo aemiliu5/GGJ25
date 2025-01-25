@@ -1,7 +1,12 @@
 using UnityEngine;
+using System.Collections;
 public class DeathBubble : MonoBehaviour {
+    [SerializeField] private float tweenDuration = 0.2f;
     private ObjectPoolItem _objectPoolItem;
     private Animator _animator;
+
+    private float _currentTweenTime;
+
     private void OnEnable() {
         _objectPoolItem = GetComponent<ObjectPoolItem>();
         _animator = GetComponent<Animator>();
@@ -12,7 +17,19 @@ public class DeathBubble : MonoBehaviour {
             Debug.Log("LOSING");
             _animator.SetTrigger("explode");
             GameManager.instance.ChangeGameState(GameManager.GameState.LOST);
+            StartCoroutine(TweenObject());
             Destroy(collision.gameObject);
+        }
+    }
+
+    private IEnumerator TweenObject() {
+        yield return new WaitForSeconds(1.5f);
+        var startingScale = Vector2.one * 0.3f;
+        while (transform.localScale.x > 0) {
+            _currentTweenTime += Time.deltaTime;
+            float t = _currentTweenTime / tweenDuration;
+            transform.localScale = Vector2.Lerp(startingScale, Vector2.zero, t);
+            yield return null;
         }
     }
 
