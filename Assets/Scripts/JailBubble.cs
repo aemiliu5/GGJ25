@@ -46,7 +46,7 @@ public class JailBubble : MonoBehaviour {
 
     private IEnumerator MovePlayerToCenter(GameObject gameObject) {
         Vector2 startingPosition = gameObject.transform.position;
-        while (gameObject.transform.position != _center) {
+        while (_currentRePositionTime < rePositionTime) {
             _currentRePositionTime += Time.deltaTime;
             float t = _currentRePositionTime / rePositionTime;
             Vector2 lerpPosition = Vector2.Lerp(startingPosition, _center, t);
