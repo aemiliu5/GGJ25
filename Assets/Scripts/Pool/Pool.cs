@@ -10,8 +10,10 @@ public class Pool
  
     public Pool(PoolData poolData, Transform objectHolder)
     {
+        _objectPool = new Queue<GameObject>();
         _poolData = poolData;
         _objectHolder = objectHolder;
+        ConstructPool();
     }
 
     private void ConstructPool()
@@ -27,7 +29,7 @@ public class Pool
     public GameObject RetrieveFromPool(Vector2 pos)
     {
         var obj = _objectPool.Dequeue();
-        obj.transform.position = pos;
+        obj.transform.position = new Vector3(pos.x, pos.y, 0.0f);
         obj.SetActive(true);
         return obj;
     }
