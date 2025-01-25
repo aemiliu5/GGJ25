@@ -70,5 +70,4 @@ public class GameManager : MonoBehaviour
 		ScoreManager.instance.ApplyHighscore();
 		//Time.timeScale = 0;
 	}
-
 }
