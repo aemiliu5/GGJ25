@@ -29,8 +29,7 @@ public class GameManager : MonoBehaviour
 		{
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
-				ChangeGameState(GameState.PLAY);
-				PlayerController.instance.InitialJump();
+				StartGame();
 			}
 		}
 
@@ -51,8 +50,9 @@ public class GameManager : MonoBehaviour
 
 	public void StartGame()
 	{
-		currentGameState = GameState.PLAY;
+		ChangeGameState(GameState.PLAY);
 		Time.timeScale = 1;
+		PlayerController.instance.InitialJump();
 	}
 
 	public void Lose()

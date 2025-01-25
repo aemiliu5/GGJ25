@@ -21,6 +21,7 @@ public class Bubble : MonoBehaviour
         if (direction.y < 0)
         {
             PlayerController.instance.Jump();
+            
             ScoreManager.instance.AddScore(10);
             ScoreManager.instance.AddStreak();
             Destroy(gameObject);
