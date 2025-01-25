@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 
 public class Bubble : MonoBehaviour
 {
-    void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log("Collision detected");
 
@@ -28,4 +29,11 @@ public class Bubble : MonoBehaviour
             Debug.Log("Collided with the top side");
         }
     }
+
+    private void OnBecameInvisible()
+    {
+        // TODO immediately connect this to object pooling!
+        Destroy(gameObject);
+    }
+    
 }
