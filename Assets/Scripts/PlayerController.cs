@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour
 
 	public void InitialJump()
 	{
+		anim.SetTrigger("Initial");
 		rb.AddForce(new Vector2(0, jumpForce * 2), ForceMode2D.Impulse);
 	}
 }
