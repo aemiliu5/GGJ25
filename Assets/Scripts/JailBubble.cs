@@ -6,9 +6,10 @@ public class JailBubble : MonoBehaviour {
     [SerializeField] private int jailBreakCounter = 2;
  
     private Vector3 _center;
-    private bool _inJail;
     private int _jailCounter;
     private ObjectPoolItem _objectPoolItem;
+
+    private PlayerController _playerController;
 
     private float _currentRePositionTime = 0.0f;
 
@@ -18,15 +19,15 @@ public class JailBubble : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        if (IsTopSide(collision)) {
-            // Move player to the center
-            StartCoroutine(MovePlayerToCenter(collision.gameObject));
-            _inJail = true;
-        }
+        _playerController = collision.gameObject.GetComponent<PlayerController>();
+        StartCoroutine(MovePlayerToCenter(collision.gameObject));
+        _playerController.Simulated(false);
+        _playerController.IsInJail = true;
     }
 
     private void Update() {
-        if (!_inJail) return;
+        if (_playerController == null) return;
+        if (!_playerController.IsInJail) return;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -40,7 +41,8 @@ public class JailBubble : MonoBehaviour {
             ScoreManager.instance.AddStreak();
             _objectPoolItem.CleanUp();
             Debug.Log("Collided with the top side");
-            _inJail = false;
+            _playerController.Simulated(true);
+            _playerController.IsInJail = false;
         }
     }
 
@@ -53,21 +55,6 @@ public class JailBubble : MonoBehaviour {
             gameObject.transform.position = lerpPosition;
             yield return null;
         }
-    }
-
-    private bool IsTopSide(Collision2D collision) {
-        Collider2D collider = collision.collider;
-        Vector3 contactPoint = collision.contacts[0].point;
-        Vector3 center = collider.bounds.center;
-
-        Vector3 direction = contactPoint - center;
-        direction.Normalize();
-
-        if (direction.y < 0) {
-            return true;
-        }
-
-        return false;
     }
 
     private void OnBecameInvisible() {

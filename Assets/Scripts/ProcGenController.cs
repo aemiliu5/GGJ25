@@ -1,19 +1,16 @@
 using System;
-using System.Collections;
 using System.Linq;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
+using System.Collections.Generic;
 
 public class ProcGenController : MonoBehaviour
 {
     // we want this to spawn the bubbles automatically.
     // each one will be spawned in the scene and will have to be correctly spawned in the lines 
     
-    [Tooltip("A prefab to spawn inside the scene.")]
-    [SerializeField] private GameObject prefab;
-
     [Tooltip("How many times to spawn the prefab.")] 
     [Range(1, 300)] 
     [SerializeField]
@@ -38,6 +35,8 @@ public class ProcGenController : MonoBehaviour
     [SerializeField] private float maxRadius = 0.35f;
 
     private PoolManager _poolManager;
+
+    private List<string> _poolNames = new List<string>() { "BubbleManager", "JailBubblePool", "DeathBubblePool" };
     
     private void Start()
     {
@@ -59,24 +58,22 @@ public class ProcGenController : MonoBehaviour
             
             Debug.Log($"[{i}]: The delta between the two offsets is: {Math.Abs(previousXValue - xValue)}.");
 
-            var obj = _poolManager.RetrieveFromPool("BubbleManager", new Vector2(xValue, yValue * i));
-            obj.transform.localScale = new Vector3(radius, radius, 0);
-            
+            int maxRange = 3;
+            int rndGenIndex = Random.Range(0, maxRange);
+            Vector2 position = new Vector2(xValue, yValue * i);
+
+            var obj = _poolManager.RetrieveFromPool(_poolNames[rndGenIndex], position);
+
+            int multiplier = rndGenIndex == 1 ? 3 : 1;
+
+            obj.transform.localScale = new Vector3(radius * multiplier, radius * multiplier, 0);
             previousXValue = xValue;
         }
-    }
-
-    private void Update()
-    {
-
     }
 
     private void CheckForInvalidValues()
     {
         var errors = "";
-
-        if (prefab == null)
-            errors += "You must specify a prefab\n";
         
         if (iterations < 1)
             errors += "Iterations must happen at least one time.\n";

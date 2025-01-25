@@ -152,6 +152,12 @@ MonoBehaviour:
   - poolName: BubbleManager
     poolSize: 150
     gameObject: {fileID: 4875867909779796715, guid: f936722d70dd76146ba9fbc275883bba, type: 3}
+  - poolName: JailBubblePool
+    poolSize: 150
+    gameObject: {fileID: 4875867909779796715, guid: 62652702ede135249af0c7f25b3923d2, type: 3}
+  - poolName: DeathBubblePool
+    poolSize: 150
+    gameObject: {fileID: 4875867909779796715, guid: 562a87ec78a07c647a3d599de5e49f40, type: 3}
   poolParent: {fileID: 1441845867}
 --- !u!4 &24985132
 Transform:
@@ -1863,7 +1869,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28889605ccecb4e49b4f47084e84b582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 4875867909779796715, guid: f936722d70dd76146ba9fbc275883bba, type: 3}
   iterations: 60
   minYOffset: 0.5
   maxYOffset: 1

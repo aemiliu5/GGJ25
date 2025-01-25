@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -15,6 +16,8 @@ public class PlayerController : MonoBehaviour
 
 	public static PlayerController instance;
 
+	public bool IsInJail { get; set; }
+
 	private void Start()
 	{
 		if (instance != null)
@@ -27,9 +30,10 @@ public class PlayerController : MonoBehaviour
 		anim = GetComponent<Animator>();
 	}
 
-	private void Update()
-	{
-		Vector2 velocity = rb.linearVelocity;
+	private void Update() {
+        if (IsInJail) { return; }
+
+        Vector2 velocity = rb.linearVelocity;
 
 		if (Input.GetKey(KeyCode.A) && transform.position.x > leftBound)
 		{
@@ -47,7 +51,6 @@ public class PlayerController : MonoBehaviour
 		}
 
 		rb.linearVelocity = velocity;
-		//Debug.Log(velocity);
 	}
 	
 	// --- Jump ---
@@ -64,5 +67,9 @@ public class PlayerController : MonoBehaviour
 		Debug.Log("Initial Jump called!");
 		anim.SetTrigger("Initial_Jump");
 		rb.AddForce(new Vector2(0, jumpForce * 2), ForceMode2D.Impulse);
+	}
+
+	public void Simulated(bool simulated) {
+		rb.simulated = simulated;
 	}
 }

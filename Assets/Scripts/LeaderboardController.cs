@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -10,13 +11,15 @@ namespace Assets.Scripts {
         private PlayerDataProvider _playerDataProvider;
         private List<PlayerData> _playerData = new List<PlayerData>();
 
-        private void Start() {
+        private IEnumerator Start() {
+            yield return new WaitForEndOfFrame();
+
            _playerDataProvider = PlayerDataProvider.Instance;
 
             // Load leaderboard entries
             var upcomingData = _playerDataProvider.GetAllPlayerData();
 
-            if(_playerData.Count == upcomingData.Count) { return; }
+            if(_playerData.Count == upcomingData.Count) { yield break; }
 
             _playerData = upcomingData;
             _playerData.ForEach(data => Debug.Log(data.PlayerName));
