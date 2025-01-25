@@ -4,7 +4,8 @@ public class LoseCollider : MonoBehaviour
 {
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		Destroy(collision.gameObject);
+		Debug.Log("LOSING");
 		GameManager.instance.ChangeGameState(GameManager.GameState.LOST);
+		Destroy(collision.gameObject);
 	}
 }

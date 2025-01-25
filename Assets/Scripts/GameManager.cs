@@ -48,7 +48,11 @@ public class GameManager : MonoBehaviour
 		currentGameState = newGameState;
 		Time.timeScale = (currentGameState == GameState.PLAY || currentGameState == GameState.BEFORE_PLAY) ? 1 : 0;
 		PlayerController.instance.GetComponent<Rigidbody2D>().gravityScale = (currentGameState == GameState.PLAY) ? 1 : 0;
-	}
+
+		if (currentGameState == GameState.LOST) {
+            Lose();
+        }
+    }
 
 	public void StartGame()
 	{
