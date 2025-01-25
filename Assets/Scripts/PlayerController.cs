@@ -9,7 +9,9 @@ public class PlayerController : MonoBehaviour
 	public float leftBound;
 	public float rightBound;
 
+	private Animator anim;
 	private Rigidbody2D rb;
+	private SpriteRenderer sr;
 
 	public static PlayerController instance;
 
@@ -21,6 +23,8 @@ public class PlayerController : MonoBehaviour
 		instance = this;
 
 		rb = GetComponent<Rigidbody2D>();
+		sr = GetComponent<SpriteRenderer>();
+		anim = GetComponent<Animator>();
 	}
 
 	private void Update()
@@ -30,10 +34,12 @@ public class PlayerController : MonoBehaviour
 		if (Input.GetKey(KeyCode.A) && transform.position.x > leftBound)
 		{
 			velocity.x = -horizontalSpeed;
+			sr.flipX = true;
 		}
 		else if (Input.GetKey(KeyCode.D) && transform.position.x < rightBound)
 		{
 			velocity.x = horizontalSpeed;
+			sr.flipX = false;
 		}
 		else
 		{
@@ -47,6 +53,7 @@ public class PlayerController : MonoBehaviour
 	
 	public void Jump()
 	{
+		anim.SetTrigger("col");
 		rb.linearVelocityY = 0;
 		rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
 	}
