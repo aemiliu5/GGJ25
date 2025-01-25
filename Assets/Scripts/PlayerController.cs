@@ -87,4 +87,12 @@ public class PlayerController : MonoBehaviour {
 	public void Simulated(bool simulated) {
 		rb.simulated = simulated;
 	}
+
+	public void TriggerYarn() {
+		anim.SetTrigger("yarn");
+	}
+
+	public void TriggerJail() {
+		anim.SetTrigger("jailed");
+	}
 }

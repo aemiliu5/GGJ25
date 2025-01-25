@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -20,7 +21,9 @@ public class JailBubble : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision) {
         _playerController = collision.gameObject.GetComponent<PlayerController>();
-        StartCoroutine(MovePlayerToCenter(collision.gameObject));
+        StartCoroutine(MovePlayerToCenter(collision.gameObject, () => {
+            _playerController.TriggerJail();
+        }));
         _playerController.Simulated(false);
         _playerController.IsInJail = true;
     }
@@ -46,7 +49,7 @@ public class JailBubble : MonoBehaviour {
         }
     }
 
-    private IEnumerator MovePlayerToCenter(GameObject gameObject) {
+    private IEnumerator MovePlayerToCenter(GameObject gameObject, Action onComplete) {
         Vector2 startingPosition = gameObject.transform.position;
         while (_currentRePositionTime < rePositionTime) {
             _currentRePositionTime += Time.deltaTime;
@@ -55,6 +58,8 @@ public class JailBubble : MonoBehaviour {
             gameObject.transform.position = lerpPosition;
             yield return null;
         }
+
+        onComplete?.Invoke();
     }
 
     private void OnBecameInvisible() {

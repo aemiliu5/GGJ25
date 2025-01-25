@@ -45,7 +45,6 @@ public class PlayerDataProvider : MonoBehaviour {
 
     public void SaveCurrentPlayerData()
     {
-        _currentPlayerData.PlayerName = "Mitsos";
         _allData.Add(_currentPlayerData);
         _saveSystemWrapper.WriteData("playerData", _allData);
 

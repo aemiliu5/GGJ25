@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
 	public void ChangeGameState(GameState newGameState)
 	{
 		currentGameState = newGameState;
-		Time.timeScale = (currentGameState == GameState.PLAY || currentGameState == GameState.BEFORE_PLAY) ? 1 : 0;
+		//Time.timeScale = (currentGameState == GameState.PLAY || currentGameState == GameState.BEFORE_PLAY) ? 1 : 0;
 
 		if (currentGameState == GameState.LOST) {
             Lose();
@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
 		// show losing UI
 		currentGameState = GameState.LOST;
 		ScoreManager.instance.ApplyHighscore();
-		Time.timeScale = 0;
+		//Time.timeScale = 0;
 	}
 
 }

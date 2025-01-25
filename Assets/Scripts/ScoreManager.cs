@@ -22,7 +22,6 @@ public class ScoreManager : MonoBehaviour {
 
 		instance = this;
 		_playerDataProvider = PlayerDataProvider.Instance;
-		_playerDataProvider.CreateNewPlayerData();
 	}
 
 	public void Update() {

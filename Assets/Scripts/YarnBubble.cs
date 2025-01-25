@@ -19,16 +19,14 @@ public class YarnBubble : MonoBehaviour {
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
-        if (IsTopSide(collision)) {
-            _playerController = collision.gameObject.GetComponent<PlayerController>();
-            StartCoroutine(MovePlayerToCenter(collision.gameObject, () => {
-                // Play animation
-                StartCoroutine(LaunchAfterTime());
-            }));
+        _playerController = collision.gameObject.GetComponent<PlayerController>();
+        StartCoroutine(MovePlayerToCenter(collision.gameObject, () => {
+            _playerController.TriggerYarn();
+            StartCoroutine(LaunchAfterTime());
+        }));
 
-            _playerController.Simulated(false);
-            _playerController.IsInJail = true;
-        }
+        _playerController.Simulated(false);
+        _playerController.IsInJail = true;
     }
 
     private IEnumerator LaunchAfterTime() {
