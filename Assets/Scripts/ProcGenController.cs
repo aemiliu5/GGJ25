@@ -39,6 +39,8 @@ public class ProcGenController : MonoBehaviour
     
     private void Start()
     {
+        CheckForInvalidValues();
+        
         float previousXValue = -999;
         
         for (var i = 0; i < iterations; i++)
@@ -73,10 +75,16 @@ public class ProcGenController : MonoBehaviour
             errors += "Iterations must happen at least one time.\n";
         
         if (minXValue > maxXValue)
-            errors += "Min values must be greater than max\n";
+            errors += "The minimum x value must be less than the max\n";
+        
+        if (minYOffset > maxYOffset)
+            errors += "The minimum y value must be less than the max\n";
+        
+        if (minRadius > maxRadius)
+            errors += "The minimum radius value must be less than the max\n";
 
-
-        throw new Exception(errors);
+        if (errors != "")
+            throw new Exception(errors);
     }
 
 }
