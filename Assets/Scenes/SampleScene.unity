@@ -150,14 +150,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poolData:
   - poolName: BubbleManager
-    poolSize: 150
+    poolSize: 80
     gameObject: {fileID: 4875867909779796715, guid: f936722d70dd76146ba9fbc275883bba, type: 3}
   - poolName: JailBubblePool
-    poolSize: 150
+    poolSize: 80
     gameObject: {fileID: 4875867909779796715, guid: 62652702ede135249af0c7f25b3923d2, type: 3}
   - poolName: DeathBubblePool
-    poolSize: 150
+    poolSize: 80
     gameObject: {fileID: 4875867909779796715, guid: 562a87ec78a07c647a3d599de5e49f40, type: 3}
+  - poolName: YarnBubblePool
+    poolSize: 80
+    gameObject: {fileID: 4875867909779796715, guid: 0bc6d0ebddddb5342857b2c7a8f0bbb0, type: 3}
   poolParent: {fileID: 1441845867}
 --- !u!4 &24985132
 Transform:
@@ -1026,6 +1029,7 @@ MonoBehaviour:
   horizontalSpeed: 3
   jumpForce: 7
   jailJumpForce: 12
+  yarnJumpForce: 12
   leftBound: -2.75
   rightBound: 2.75
 --- !u!61 &533365289

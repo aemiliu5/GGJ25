@@ -1,12 +1,13 @@
-using System;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
-{
+public class PlayerController : MonoBehaviour {
+	public enum JumpType { Normal, Jail, Yarn}
+
 	public float horizontalSpeed;
 	public float jumpForce;
 	[SerializeField] private float jailJumpForce = 12;
+	[SerializeField] private float yarnJumpForce = 12;
 
 	public float leftBound;
 	public float rightBound;
@@ -19,6 +20,8 @@ public class PlayerController : MonoBehaviour
 
 	public bool IsInJail { get; set; }
 
+	private Dictionary<JumpType, float> _jumpTypeToForce;
+
 	private void Start()
 	{
 		if (instance != null)
@@ -29,6 +32,12 @@ public class PlayerController : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>();
 		sr = GetComponent<SpriteRenderer>();
 		anim = GetComponent<Animator>();
+
+		_jumpTypeToForce = new Dictionary<JumpType, float>() {
+			{ JumpType.Normal, jumpForce },
+			{ JumpType.Jail, jailJumpForce },
+			{ JumpType.Yarn, yarnJumpForce },
+		};
 	}
 
 	private void Update() {
@@ -56,17 +65,12 @@ public class PlayerController : MonoBehaviour
 	
 	// --- Jump ---
 	
-	public void Jump()
+	public void Jump(JumpType jumpType = JumpType.Normal)
 	{
 		anim.SetTrigger("col");
 		rb.linearVelocityY = 0;
-		rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+		rb.AddForce(new Vector2(0, _jumpTypeToForce[jumpType]), ForceMode2D.Impulse);
 	}
-    public void JailJump() {
-        anim.SetTrigger("col");
-        rb.linearVelocityY = 0;
-        rb.AddForce(new Vector2(0, jailJumpForce), ForceMode2D.Impulse);
-    }
 
     public void InitialJump()
 	{
