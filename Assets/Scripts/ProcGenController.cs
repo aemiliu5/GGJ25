@@ -1,8 +1,6 @@
 using System;
-using System.Numerics;
-using NUnit.Framework;
-using Unity.VisualScripting;
-using UnityEditor;
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Random = UnityEngine.Random;
@@ -15,9 +13,11 @@ public class ProcGenController : MonoBehaviour
     
     [Tooltip("A prefab to spawn inside the scene.")]
     [SerializeField] private GameObject prefab;
-    
-    [Tooltip("How many times to spawn the prefab.")]
-    [UnityEngine.Range(1, 60)][SerializeField] private int iterations = 60;
+
+    [Tooltip("How many times to spawn the prefab.")] 
+    [Range(1, 300)] 
+    [SerializeField]
+    private int iterations = 50;
     
     [Tooltip("Minimum height difference that will be added from one bubble to another.")]
     [SerializeField] private float minYOffset = 2.7f;
@@ -36,17 +36,20 @@ public class ProcGenController : MonoBehaviour
     
     [Tooltip("Maximum height difference that will be added from one bubble to another.")]
     [SerializeField] private float maxRadius = 0.35f;
+
+    private PoolManager _poolManager;
     
     private void Start()
     {
         CheckForInvalidValues();
-        
+
+        _poolManager = FindObjectsByType<PoolManager>(FindObjectsSortMode.None).First();
         float previousXValue = -999;
         
         for (var i = 0; i < iterations; i++)
         {
             var xValue = Random.Range(minXValue, maxXValue);
-            var yValue = Random.Range(minYOffset, minYOffset);
+            var yValue = Random.Range(minYOffset, maxYOffset);
             var radius = Random.Range(minRadius, maxRadius);
 
             while (i != 0 && (Math.Abs(previousXValue - xValue) > 3.5f || Math.Abs(previousXValue - xValue) < 1f))
@@ -55,13 +58,17 @@ public class ProcGenController : MonoBehaviour
             }
             
             Debug.Log($"[{i}]: The delta between the two offsets is: {Math.Abs(previousXValue - xValue)}.");
-            
-            var prefab = Instantiate(this.prefab, new Vector3(xValue, i * yValue, 0), Quaternion.identity);
-            prefab.name = $"Bubble {i}";
-            prefab.transform.localScale = new Vector3(radius, radius, 0);
+
+            var obj = _poolManager.RetrieveFromPool("BubbleManager", new Vector2(xValue, yValue * i));
+            obj.transform.localScale = new Vector3(radius, radius, 0);
             
             previousXValue = xValue;
         }
+    }
+
+    private void Update()
+    {
+
     }
 
     private void CheckForInvalidValues()
