@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerDataProvider : MonoBehaviour {
@@ -9,9 +10,12 @@ public class PlayerDataProvider : MonoBehaviour {
             DontDestroyOnLoad(gameObject);
         }
     }
+
     private SaveSystemWrapper _saveSystemWrapper;
     private List<PlayerData> _allData = new List<PlayerData>();
     private PlayerData _currentPlayerData;
+
+    public int HighScore { get; private set; }
 
     private void Start() {
         _saveSystemWrapper = SaveSystemWrapper.Instance;
@@ -24,7 +28,7 @@ public class PlayerDataProvider : MonoBehaviour {
     public void SetPlayerName(string playerName) {
         _currentPlayerData.PlayerName = playerName;
     }
-
+    public void ResetScore() => _currentPlayerData.PlayerScore = 0;
     public void IncreasePlayerScore(int amount) => _currentPlayerData.PlayerScore += amount;
     public void DecreasePlayerScore(int amount) => _currentPlayerData.PlayerScore -= amount;
     public int CurrentScore => _currentPlayerData.PlayerScore;
@@ -40,5 +44,7 @@ public class PlayerDataProvider : MonoBehaviour {
     public void SaveCurrentPlayerData() {
         _allData.Add(_currentPlayerData);
         _saveSystemWrapper.WriteData("playerData", _allData);
+
+        HighScore = _allData.Max(item => item.PlayerScore);
     }
 }

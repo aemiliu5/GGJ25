@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
 	}
 
 	public static GameManager instance;
+	private SceneLoader _sceneLoader;
+
 
 	public void Start()
 	{
@@ -34,9 +36,8 @@ public class GameManager : MonoBehaviour
 		}
 
 		// Restart
-		if (Input.GetKeyDown(KeyCode.R))
-		{
-			SceneManager.LoadScene(0);
+		if (Input.GetKeyDown(KeyCode.R)) {
+			_sceneLoader.LoadScene(SceneName.SampleScene);
 		}
 	}
 

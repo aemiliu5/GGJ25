@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts {
@@ -23,7 +24,9 @@ namespace Assets.Scripts {
         }
 
         private void ConstructObject() {
-            foreach (var entry in _playerData) {
+            var sortedList = _playerData.OrderByDescending(item => item.PlayerScore);
+
+            foreach (var entry in sortedList) {
                 LeaderboardItem tempItem = Instantiate(leaderboardItem, leaderboardHolder);
                 tempItem.InitItem(entry);
             }
