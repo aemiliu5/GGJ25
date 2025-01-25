@@ -5,7 +5,12 @@ using UnityEngine;
 public class PlayerCameraFollow : MonoBehaviour
 {
 	public Rigidbody2D playerBody;
+	[SerializeField] private float followVelocitySensitivity;
 	private CinemachineCamera camera;
+
+	private float timer = 0f;
+	private float timerEnd = 0.25f;
+	private bool shouldFollow;
 
 	private void Start()
 	{
@@ -14,10 +19,12 @@ public class PlayerCameraFollow : MonoBehaviour
 
 	private void Update()
 	{
-		camera.Follow = (playerBody.linearVelocityY > 0.5f) ? playerBody.transform : null;
+		if (playerBody.linearVelocityY > followVelocitySensitivity)
+			timer = 0;
 		
-		Debug.Log(playerBody.linearVelocityY);
+		timer += Time.deltaTime;
+		
+		shouldFollow = timer < timerEnd;
+		camera.Follow = shouldFollow ? playerBody.transform : null;
 	}
-	
-	
 }
