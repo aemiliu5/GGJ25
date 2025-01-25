@@ -580,6 +580,7 @@ GameObject:
   - component: {fileID: 476579708}
   - component: {fileID: 476579710}
   - component: {fileID: 476579711}
+  - component: {fileID: 476579712}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -679,6 +680,19 @@ MonoBehaviour:
   lockDirection: 0
   lockPositionValue: 0
   useVCamFollowAsOrigin: 0
+--- !u!114 &476579712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 476579706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee42ad6c13c853f48a3e0a9c09ada0cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerBody: {fileID: 533365290}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1808,37 +1822,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1486910715
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1486910716}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1486910716
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1486910715}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.51765686, y: -0.10830798, z: -10.042211}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1594062335
 GameObject:
   m_ObjectHideFlags: 0
@@ -2397,7 +2380,6 @@ SceneRoots:
   - {fileID: 850826940}
   - {fileID: 413835575}
   - {fileID: 476579709}
-  - {fileID: 1486910716}
   - {fileID: 1039772378}
   - {fileID: 1681922510}
   - {fileID: 1799224138}
