@@ -22,6 +22,7 @@ public class Pool
         {
             var objectInstance = Object.Instantiate(_poolData.gameObject, _objectHolder);
             objectInstance.SetActive(false);
+            objectInstance.GetComponent<ObjectPoolItem>().Init(this);
             _objectPool.Enqueue(objectInstance);
         }
     }

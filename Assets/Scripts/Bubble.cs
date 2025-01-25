@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class Bubble : MonoBehaviour
 {
+    private ObjectPoolItem _objectPoolItem;
+
+    private void OnEnable() {
+        _objectPoolItem ??= GetComponent<ObjectPoolItem>();
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //Debug.Log("Collision detected");
@@ -30,10 +36,8 @@ public class Bubble : MonoBehaviour
         }
     }
 
-    private void OnBecameInvisible()
-    {
-        // TODO immediately connect this to object pooling!
-        Destroy(gameObject);
+    private void OnBecameInvisible() {
+        _objectPoolItem?.CleanUp();
     }
     
 }
