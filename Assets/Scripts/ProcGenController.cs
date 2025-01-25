@@ -3,6 +3,7 @@ using System.Numerics;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Quaternion = UnityEngine.Quaternion;
 using Random = UnityEngine.Random;
 using Vector3 = UnityEngine.Vector3;
@@ -17,7 +18,7 @@ public class ProcGenController : MonoBehaviour
     
     // how many times to copy
     [SerializeField] private int iterations;
-    [SerializeField] private float randomYDistanceOffset;
+    [SerializeField] private float YDistanceOffset;
     [SerializeField] private float minXValue;
     [SerializeField] private float maxXValue;
     [SerializeField] private float minRadius;
@@ -39,7 +40,7 @@ public class ProcGenController : MonoBehaviour
             
             Debug.Log($"[{i}]: The delta between the two offsets is: {Math.Abs(previousXValue - xValue)}.");
             
-            var prefab = Instantiate(this.prefab, new Vector3(xValue, 6 * i * randomYDistanceOffset, 0), Quaternion.identity);
+            var prefab = Instantiate(this.prefab, new Vector3(xValue, (i * YDistanceOffset) + Random.Range(-0.1f, 0.1f), 0), Quaternion.identity);
             prefab.name = $"Bubble {i}";
             prefab.transform.localScale = new Vector3(radius, radius, 0);
             
