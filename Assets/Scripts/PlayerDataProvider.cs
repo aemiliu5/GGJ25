@@ -38,6 +38,8 @@ public class PlayerDataProvider : MonoBehaviour {
             _allData = tempList;
         }
 
+        HighScore = _allData.Max(item => item.PlayerScore);
+
         return _allData;
     }
 
