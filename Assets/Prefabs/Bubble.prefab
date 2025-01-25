@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6731325401328268096}
   - component: {fileID: 7576515372226303607}
   - component: {fileID: 4667203037468513506}
+  - component: {fileID: 3890284547279018222}
   m_Layer: 0
   m_Name: Bubble
   m_TagString: Untagged
@@ -80,12 +81,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: -9136834448258697486, guid: 51bc46b7b42c6574f94e2aaf400233e7, type: 3}
-  m_Color: {r: 0.5990566, g: 1, b: 0.99576974, a: 1}
+  m_Sprite: {fileID: 21300000, guid: d8ca2cb40a1a24541ad11e5839f839b7, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.23, y: 2.16}
+  m_Size: {x: 5, y: 5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -137,8 +138,8 @@ CircleCollider2D:
   m_UsedByEffector: 1
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  m_Offset: {x: -0.025843978, y: 0}
+  m_Radius: 2.257379
 --- !u!251 &7576515372226303607
 PlatformEffector2D:
   m_ObjectHideFlags: 0
@@ -170,3 +171,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14b1cffb267a4453293f92c9232b6dd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3890284547279018222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4875867909779796715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b69d86219f732c43ba28c0c0eab65fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 21300000, guid: d8ca2cb40a1a24541ad11e5839f839b7, type: 3}
+  - {fileID: 21300000, guid: 42223352321d5c34bb1de37fac234895, type: 3}
+  - {fileID: 21300000, guid: 3dec5dcb8848b77499d4dd0e24882ed3, type: 3}
+  - {fileID: 21300000, guid: 8bd94cef77e952e4d844f88bad4f84e9, type: 3}
+  - {fileID: 21300000, guid: 65423b957ab3c9d46ac6a55226d150e4, type: 3}
+  - {fileID: 21300000, guid: 5de481a866faddf47b81de8383fea403, type: 3}
+  - {fileID: 21300000, guid: 1dd1a9cc3a05ca74a8b1ef8df31947e3, type: 3}
+  - {fileID: 21300000, guid: cdd882406b8c61e4fb92ec43901fa1dc, type: 3}
+  - {fileID: 21300000, guid: 66abcec9a00b61f49acd5055ee7fed56, type: 3}
+  - {fileID: 21300000, guid: b0683db29a5fc72438dc1f31642c689a, type: 3}
+  - {fileID: 21300000, guid: a57922091e79a3f4abdd07ad944a6b4e, type: 3}
+  - {fileID: 21300000, guid: c51785a91326fd74187653c9de5bd44a, type: 3}
+  - {fileID: 21300000, guid: f1d06194438dcef48afe31f665b9e415, type: 3}
+  frameRate: 0.02

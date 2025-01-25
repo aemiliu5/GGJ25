@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
 		}
 
 		rb.linearVelocity = velocity;
+		//Debug.Log(velocity);
 	}
 	
 	// --- Jump ---
@@ -60,7 +61,8 @@ public class PlayerController : MonoBehaviour
 
 	public void InitialJump()
 	{
-		anim.SetTrigger("Initial");
+		Debug.Log("Initial Jump called!");
+		anim.SetTrigger("Initial_Jump");
 		rb.AddForce(new Vector2(0, jumpForce * 2), ForceMode2D.Impulse);
 	}
 }
