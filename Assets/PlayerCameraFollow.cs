@@ -25,7 +25,7 @@ public class PlayerCameraFollow : MonoBehaviour
 		
 		timer += Time.deltaTime;
 		
-		shouldFollow = (timer < timerEnd && Time.timeSinceLevelLoad > 1f);
+		shouldFollow = (timer < timerEnd && Time.timeSinceLevelLoad > 1f && playerBody.transform.position.y > 2f);
 		camera.Follow = shouldFollow ? playerBody.transform : null;
 	}
 }

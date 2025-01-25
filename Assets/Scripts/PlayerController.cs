@@ -72,6 +72,11 @@ public class PlayerController : MonoBehaviour
 	{
 		Debug.Log("Initial Jump called!");
 		anim.SetTrigger("Initial_Jump");
+	}
+
+	public void LaunchCatUpwards()
+	{
+		Debug.Log("Will launch cat upwards!");
 		rb.AddForce(new Vector2(0, jumpForce * 2), ForceMode2D.Impulse);
 	}
 
