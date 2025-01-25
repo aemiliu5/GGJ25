@@ -15,6 +15,9 @@ public class ProcGenController : MonoBehaviour
     
     [Tooltip("A prefab to spawn inside the scene.")]
     [SerializeField] private GameObject prefab;
+
+    [Tooltip("The that will follow the player throughout the game")]
+    [SerializeField] private GameObject background;
     
     [Tooltip("How many times to spawn the prefab.")]
     [UnityEngine.Range(1, 60)][SerializeField] private int iterations = 60;
@@ -62,6 +65,14 @@ public class ProcGenController : MonoBehaviour
             
             previousXValue = xValue;
         }
+    }
+
+    private void Update()
+    {
+        var backgroundPosition = background.transform.position;
+        var prefabPosition = prefab.transform.position;
+        
+        background.transform.position = new Vector3(backgroundPosition.x, prefabPosition.y);
     }
 
     private void CheckForInvalidValues()
