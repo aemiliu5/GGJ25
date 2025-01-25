@@ -3,37 +3,48 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float horizontalSpeed;
-    public float jumpForce;
+	public float horizontalSpeed;
+	public float jumpForce;
 
-    public float leftBound;
-    public float rightBound;
+	public float leftBound;
+	public float rightBound;
 
-    public static PlayerController instance;
+	private Rigidbody2D rb;
 
-    private void Start()
-    {
-        if (instance != null)
-            Destroy(instance.gameObject);
+	public static PlayerController instance;
 
-        instance = this;
-    }
+	private void Start()
+	{
+		if (instance != null)
+			Destroy(instance.gameObject);
 
-    public void Jump()
-    {
-        GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-    }
+		instance = this;
 
-    private void Update() 
-    {
-        if (Input.GetKey(KeyCode.A) && transform.position.x > leftBound)
-        {
-            transform.Translate(-horizontalSpeed, 0, 0);
-        }
-        
-        if (Input.GetKey(KeyCode.D) && transform.position.x < rightBound)
-        {
-            transform.Translate(horizontalSpeed, 0, 0);
-        }
-    }
+		rb = GetComponent<Rigidbody2D>();
+	}
+
+	private void Update()
+	{
+		Vector2 velocity = rb.linearVelocity;
+
+		if (Input.GetKey(KeyCode.A) && transform.position.x > leftBound)
+		{
+			velocity.x = -horizontalSpeed;
+		}
+		else if (Input.GetKey(KeyCode.D) && transform.position.x < rightBound)
+		{
+			velocity.x = horizontalSpeed;
+		}
+		else
+		{
+			velocity.x = 0;
+		}
+
+		rb.linearVelocity = velocity;
+	}
+	
+	public void Jump()
+	{
+		rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+	}
 }
