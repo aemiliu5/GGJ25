@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
 			if (Input.GetKeyDown(KeyCode.Space))
 			{
 				ChangeGameState(GameState.PLAY);
+				PlayerController.instance.InitialJump();
 			}
 		}
 

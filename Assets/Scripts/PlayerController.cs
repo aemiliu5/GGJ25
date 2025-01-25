@@ -43,8 +43,15 @@ public class PlayerController : MonoBehaviour
 		rb.linearVelocity = velocity;
 	}
 	
+	// --- Jump ---
+	
 	public void Jump()
 	{
 		rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+	}
+
+	public void InitialJump()
+	{
+		rb.AddForce(new Vector2(0, jumpForce * 2), ForceMode2D.Impulse);
 	}
 }
