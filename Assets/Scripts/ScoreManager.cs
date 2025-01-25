@@ -22,10 +22,12 @@ public class ScoreManager : MonoBehaviour {
 
 		instance = this;
 		_playerDataProvider = PlayerDataProvider.Instance;
+		_playerDataProvider.CreateNewPlayerData();
 	}
 
-	public void Update()
-	{
+	public void Update() {
+		if (_playerDataProvider == null) return;
+
 		comboText.text = $"{streak}";
 		scoreText.text = $"{Score}";
 		highscoreText.text = $"{HighScore}";
