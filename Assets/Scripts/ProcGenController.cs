@@ -14,7 +14,9 @@ public class ProcGenController : MonoBehaviour
     [Tooltip("A prefab to spawn inside the scene.")]
     [SerializeField] private GameObject prefab;
 
-    [Tooltip("How many times to spawn the prefab.")] [UnityEngine.Range(1, 60)] [SerializeField]
+    [Tooltip("How many times to spawn the prefab.")] 
+    [Range(1, 300)] 
+    [SerializeField]
     private int iterations = 50;
     
     [Tooltip("Minimum height difference that will be added from one bubble to another.")]
@@ -37,9 +39,8 @@ public class ProcGenController : MonoBehaviour
 
     private PoolManager _poolManager;
     
-    private IEnumerator Start()
+    private void Start()
     {
-        yield return new WaitForEndOfFrame();
         CheckForInvalidValues();
 
         _poolManager = FindObjectsByType<PoolManager>(FindObjectsSortMode.None).First();
@@ -58,7 +59,8 @@ public class ProcGenController : MonoBehaviour
             
             Debug.Log($"[{i}]: The delta between the two offsets is: {Math.Abs(previousXValue - xValue)}.");
 
-            _poolManager.RetrieveFromPool("BubbleManager", new Vector2(xValue, yValue * iterations));
+            var obj = _poolManager.RetrieveFromPool("BubbleManager", new Vector2(xValue, yValue * i));
+            obj.transform.localScale = new Vector3(radius, radius, 0);
             
             previousXValue = xValue;
         }
