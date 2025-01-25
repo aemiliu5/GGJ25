@@ -10,7 +10,7 @@ namespace Assets.Scripts {
         private PlayerDataProvider _playerDataProvider;
         private List<PlayerData> _playerData = new List<PlayerData>();
 
-        private void OnEnable() {
+        private void Start() {
            _playerDataProvider = PlayerDataProvider.Instance;
 
             // Load leaderboard entries
@@ -21,6 +21,8 @@ namespace Assets.Scripts {
             _playerData = upcomingData;
             _playerData.ForEach(data => Debug.Log(data.PlayerName));
             ConstructObject();
+
+            gameObject.SetActive(false);
         }
 
         private void ConstructObject() {
