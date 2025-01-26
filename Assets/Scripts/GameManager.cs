@@ -28,11 +28,12 @@ public class GameManager : MonoBehaviour
 		
 		instance = this;
 		ChangeGameState(GameState.BEFORE_PLAY);
-		loseCanvas.SetActive(false);
+		loseCanvas.GetComponent<CanvasGroup>().alpha = 0;
 		
 		_sceneLoader = SceneLoader.Instance;
 
 		Application.targetFrameRate = 120;
+		PlayerDataProvider.Instance.ResetScore();
 	}
 
 	private void Update()
@@ -52,7 +53,9 @@ public class GameManager : MonoBehaviour
 
 		}
 		#endif
-		
+
+		if (Input.GetKeyDown(KeyCode.F))
+			Lose();
 	}
 
 	public GameState currentGameState;

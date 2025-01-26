@@ -1024,9 +1024,9 @@ MonoBehaviour:
   rightBound: 2.75
   ghostSpawned: 0
   ghostPrefab: {fileID: 6365741318527260610, guid: af81e49988d203c4280a0f05b2501d8e, type: 3}
-  boostDuration: 3
+  boostDuration: 6
   boostUpwardForce: 10
-  birdDuration: 2
+  birdDuration: 3
   birdUpwardForce: 7
   sensitivity: 10
   currentState: 0
