@@ -75,7 +75,7 @@ public class ProcGenController : MonoBehaviour
     {
         float previousXValue = -999;
         _isGenerating = true;
-        
+
         for (var i = initialIteration; i < iterations + initialIteration; i++)
         {
             var xValue = Random.Range(minXValue, maxXValue);
@@ -86,17 +86,36 @@ public class ProcGenController : MonoBehaviour
             {
                 xValue = Random.Range(minXValue, maxXValue);
             }
-            
-            int maxRange = 4;
-            int rndGenIndex = Random.Range(0, maxRange);
-            Vector2 position = new Vector2(xValue, yValue);
-            string poolName = _poolNames[rndGenIndex];
 
+            string poolName;
+
+            if (i % 20 == 0)
+            {
+                // After 20 iterations, choose "BubbleManager" with 50% chance, otherwise randomize among other types
+                bool isNormalBubble = Random.Range(0f, 1f) < 0.5f;
+                if (isNormalBubble)
+                {
+                    poolName = "BubbleManager";
+                }
+                else
+                {
+                    // Choose one of the other three pool names randomly
+                    var specialPools = _poolNames.Where(name => name != "BubbleManager").ToList();
+                    poolName = specialPools[Random.Range(0, specialPools.Count)];
+                }
+            }
+            else
+            {
+                // For the first 15 iterations, always choose "BubbleManager" (normal bubbles)
+                poolName = "BubbleManager";
+            }
+
+            Vector2 position = new Vector2(xValue, yValue);
             var obj = _poolManager.RetrieveFromPool(poolName, position);
 
             int multiplier = poolName.Equals("JailBubblePool") ? 3 : 1;
 
-            if(!poolName.Equals("YarnBubblePool"))
+            if (!poolName.Equals("YarnBubblePool"))
                 obj.transform.localScale = new Vector3(radius * multiplier, radius * multiplier, 0);
 
             previousXValue = xValue;
@@ -107,6 +126,7 @@ public class ProcGenController : MonoBehaviour
 
         _isGenerating = false;
     }
+
 
     private void CheckForInvalidValues()
     {

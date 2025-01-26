@@ -4,6 +4,14 @@ using UnityEngine;
 public class Bubble : MonoBehaviour
 {
     private ObjectPoolItem _objectPoolItem;
+    public Sprite initialSprite;
+    private SpriteRenderer spriteRenderer;
+
+    private void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        initialSprite = spriteRenderer.sprite;
+    }
 
     private void OnEnable() {
         _objectPoolItem ??= GetComponent<ObjectPoolItem>();
@@ -35,6 +43,7 @@ public class Bubble : MonoBehaviour
     }
 
     private void OnBecameInvisible() {
+        initialSprite = spriteRenderer.sprite;
         CleanUp();
     }
 

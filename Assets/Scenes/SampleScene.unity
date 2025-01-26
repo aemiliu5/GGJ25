@@ -1922,12 +1922,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iterations: 60
-  minYOffset: 0.5
-  maxYOffset: 1
-  minXValue: -5
-  maxXValue: 5
+  playerPos: {fileID: 533365287}
+  infiniteMargin: 2
+  minYOffset: 0.7
+  maxYOffset: 0.9
+  minXValue: -4.5
+  maxXValue: 4.5
   minRadius: 0.1
   maxRadius: 0.13
+  MaxSpawnRadiusProximity: 15
 --- !u!1 &1418548436
 GameObject:
   m_ObjectHideFlags: 0
