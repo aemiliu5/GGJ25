@@ -6,15 +6,17 @@ public class Bubble : MonoBehaviour
     private ObjectPoolItem _objectPoolItem;
     public Sprite initialSprite;
     private SpriteRenderer spriteRenderer;
-
+    private CustomSpriteAnim customSpriteAnim;
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        customSpriteAnim = GetComponent<CustomSpriteAnim>();
         initialSprite = spriteRenderer.sprite;
     }
 
     private void OnEnable() {
         _objectPoolItem ??= GetComponent<ObjectPoolItem>();
+        customSpriteAnim.ResetAnim();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -38,7 +40,7 @@ public class Bubble : MonoBehaviour
             PlayerController.instance.Jump();
             ScoreManager.instance.AddScore(10);
             ScoreManager.instance.AddStreak();
-            GetComponent<CustomSpriteAnim>().PopAnim();
+            customSpriteAnim.PopAnim();
         }
     }
 
@@ -60,7 +62,7 @@ public class Bubble : MonoBehaviour
     private void CleanUp()
     {
         Debug.Log($"Bubble {gameObject.name} became invisible and is being cleaned up.");
-        spriteRenderer.sprite = initialSprite;
+        customSpriteAnim.ResetAnim();
         _objectPoolItem?.CleanUp();
     }
 }

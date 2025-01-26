@@ -41,11 +41,17 @@ public class JailBubble : MonoBehaviour {
             PlayerController.instance.Jump(PlayerController.JumpType.Jail);
 
             ScoreManager.instance.AddScore(10);
-            ScoreManager.instance.AddStreak();
+            ScoreManager.instance.ResetStreak();
             _objectPoolItem.CleanUp();
             Debug.Log("Collided with the top side");
             _playerController.Simulated(true);
             _playerController.IsInJail = false;
+        }
+
+        if (_playerController.IsInJail)
+        {
+            _playerController.transform.Translate(0, -0.5f * Time.deltaTime, 0);
+            transform.Translate(0, -0.5f * Time.deltaTime, 0);
         }
         
         if(IsDownAndInvisible())

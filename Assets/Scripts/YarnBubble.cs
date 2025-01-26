@@ -31,6 +31,7 @@ public class YarnBubble : MonoBehaviour {
 
     private IEnumerator LaunchAfterTime() {
         yield return new WaitForSeconds(spinTime);
+        ScoreManager.instance.AddScore(100);
         _playerController.Jump(PlayerController.JumpType.Yarn);
         _playerController.Simulated(true);
         _playerController.IsInJail = false;

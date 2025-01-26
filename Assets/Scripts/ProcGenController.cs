@@ -91,7 +91,7 @@ public class ProcGenController : MonoBehaviour
 
             string poolName;
 
-            if (i % 20 == 0)
+            if (i % 5 == 0)
             {
                 // After 20 iterations, choose "BubbleManager" with 50% chance, otherwise randomize among other types
                 bool isNormalBubble = Random.Range(0f, 1f) < 0.5f;
@@ -115,10 +115,12 @@ public class ProcGenController : MonoBehaviour
             Vector2 position = new Vector2(xValue, yValue);
             var obj = _poolManager.RetrieveFromPool(poolName, position);
 
-            int multiplier = poolName.Equals("JailBubblePool") ? 3 : 1;
-
-            if (!poolName.Equals("YarnBubblePool"))
-                obj.transform.localScale = new Vector3(radius * multiplier, radius * multiplier, 0);
+            switch (poolName) // scaling
+            {
+                case "JailBubblePool": obj.transform.localScale = new Vector3(radius * 2.2f, radius * 2.2f, 0); break;
+                case "DeathBubblePool": obj.transform.localScale = new Vector3(radius * 1.5f, radius * 1.5f, 0); break;
+                case "BubbleManager": case "YarnBubblePool":  obj.transform.localScale = new Vector3(radius * 1f, radius * 1f, 0); break;
+            }
 
             previousXValue = xValue;
 

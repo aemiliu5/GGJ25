@@ -22,6 +22,11 @@ public class CustomSpriteAnim : MonoBehaviour
 		StartCoroutine(PlayAnimRoutine());
 	}
 
+	public void ResetAnim()
+	{
+		_spriteRenderer.sprite = sprites[0];
+	}
+
 	private IEnumerator PlayAnimRoutine() {
 		while (_currentIndex < sprites.Length) {
 			_spriteRenderer.sprite = sprites[_currentIndex];
