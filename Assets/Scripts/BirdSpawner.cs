@@ -36,6 +36,7 @@ public class PrefabSpawner : MonoBehaviour
 			{
 				Vector3 spawnPosition = new Vector3(player.transform.position.x, player.transform.position.y + spawnHeight, 0);
 				Instantiate(specificPrefab, spawnPosition, Quaternion.identity);
+				AudioManager.instance.PlaySoundOnce(AudioManager.instance.bird);
 			}
 		}
 	}

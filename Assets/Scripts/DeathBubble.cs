@@ -11,8 +11,6 @@ public class DeathBubble : MonoBehaviour {
     private float _currentTweenTime;
     private float _currentPlayerTweenTime;
 
-    private GameObject _playerObject;
-
     private void OnEnable() {
         _objectPoolItem = GetComponent<ObjectPoolItem>();
         _animator = GetComponent<Animator>();
@@ -21,10 +19,11 @@ public class DeathBubble : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D collision) {
         if (IsTopSide(collision)) {
             Debug.Log("LOSING");
-            _playerObject = collision.gameObject;
             _animator.SetTrigger("explode");
             GameManager.instance.ChangeGameState(GameManager.GameState.LOST);
-            StartCoroutine(TweenPlayer());
+            
+            AudioManager.instance.PlaySoundOnce(AudioManager.instance.bomb);
+            AudioManager.instance.PlaySoundOnce(AudioManager.instance.ghost);
             
             if(!PlayerController.instance.ghostSpawned)
                 Instantiate(PlayerController.instance.ghostPrefab, collision.transform.position, Quaternion.identity);
@@ -33,18 +32,6 @@ public class DeathBubble : MonoBehaviour {
             {
                 Destroy(collision.gameObject);
             });
-        }
-    }
-
-    //TODO:: DON'T HARD CODE THIS - MOVE IT TO THE PLAYER CONTROLLER
-
-    private IEnumerator TweenPlayer() {
-        var startingScale = _playerObject.transform.localScale;
-        while (_playerObject.transform.localScale.x > 0) {
-            _currentPlayerTweenTime += Time.deltaTime;
-            float t = _currentPlayerTweenTime / playerTweenDuration;
-            transform.localScale = Vector2.Lerp(startingScale, Vector2.zero, t);
-            yield return null;
         }
     }
 

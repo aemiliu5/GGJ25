@@ -68,6 +68,7 @@ public class GameManager : MonoBehaviour
 		// show losing UI
 		currentGameState = GameState.LOST;
 		ScoreManager.instance.ApplyHighscore();
+		AudioManager.instance.PlaySoundOnce(AudioManager.instance.loseMusic);
 		//Time.timeScale = 0;
 	}
 }

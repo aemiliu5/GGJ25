@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour {
         {
             rb.linearVelocity = new Vector2(0, boostUpwardForce);
             _stateTimer -= Time.deltaTime;
-            ScoreManager.instance.AddScore((int)(10 * Time.deltaTime));
+            ScoreManager.instance.AddScore(3);
         } 
         else 
         {
@@ -131,19 +131,24 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void TriggerYarn() {
+        AudioManager.instance.PlaySoundOnce(AudioManager.instance.excited);
         anim.SetTrigger("yarn");
     }
 
     public void TriggerJail() {
+        AudioManager.instance.PlaySoundOnce(AudioManager.instance.jailBubble);
         anim.SetTrigger("jailed");
     }
 
     // --- Boost Mode ---
-    public void ActivateBoostMode() {
+    public void ActivateBoostMode()
+    {
         if (currentState != PlayerState.Normal) return;
-
         currentState = PlayerState.Boosting;
         GetComponent<BoxCollider2D>().enabled = false;
+        MusicManager.instance.metal.volume = 1f;
+        MusicManager.instance.floriko.volume = 0.8f;
+        AudioManager.instance.PlaySoundOnce(AudioManager.instance.purr);
         _stateTimer = boostDuration;
         anim.SetTrigger("boost");
     }
@@ -151,6 +156,8 @@ public class PlayerController : MonoBehaviour {
     private void ExitBoostMode() {
         currentState = PlayerState.Normal;
         GetComponent<BoxCollider2D>().enabled = true;
+        MusicManager.instance.metal.volume = 0f;
+        MusicManager.instance.floriko.volume = 1f;
         rb.linearVelocity = Vector2.zero; // Reset velocity
     }
 

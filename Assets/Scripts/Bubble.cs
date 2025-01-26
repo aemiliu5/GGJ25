@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = System.Random;
 
 public class Bubble : MonoBehaviour
 {
@@ -38,6 +39,8 @@ public class Bubble : MonoBehaviour
 
         if (direction.y < 0)
         {
+            int random = UnityEngine.Random.Range(0, 1);
+            AudioManager.instance.PlaySoundOnce(random == 1 ? AudioManager.instance.popBubble : AudioManager.instance.popBubble2);
             PlayerController.instance.Jump();
             ScoreManager.instance.AddScore(10);
             ScoreManager.instance.AddStreak();

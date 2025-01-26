@@ -1,8 +1,11 @@
+using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 
 public class MainMenuController : MonoBehaviour {
     [SerializeField] private List<GameObject> panels;
+    public AudioSource guitarSlide;
 
     private SceneLoader _sceneLoader;
     private PlayerDataProvider _playerDataProvider;
@@ -16,10 +19,22 @@ public class MainMenuController : MonoBehaviour {
         _sceneLoader.LoadScene(SceneName.SampleScene);
     }
 
+    public void LoadButton()
+    {
+        StartCoroutine(GuitarSlideThenPlay());
+    }
+
     public void ChangePanelState(int mainMenuState) {
         for (int i = 0; i < panels.Count; i++) {
             panels[i].SetActive(i == mainMenuState);
         }
+    }
+
+    private IEnumerator GuitarSlideThenPlay()
+    {
+        guitarSlide.Play();
+        yield return new WaitForSeconds(0.5f);
+        LoadGameplayScene();
     }
 
     public void QuitGame() {
