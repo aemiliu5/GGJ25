@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
 		instance = this;
 		ChangeGameState(GameState.BEFORE_PLAY);
 		loseCanvas.GetComponent<CanvasGroup>().alpha = 0;
+		loseCanvas.GetComponent<CanvasGroup>().interactable = false;
 		
 		_sceneLoader = SceneLoader.Instance;
 
@@ -81,6 +82,7 @@ public class GameManager : MonoBehaviour
 	public void Lose()
 	{
 		loseCanvas.GetComponent<CanvasGroup>().DOFade(1f, 1f);
+		loseCanvas.GetComponent<CanvasGroup>().interactable = true;
 		MusicManager.instance.floriko.volume = 0f;
 		MusicManager.instance.metal.volume = 0f;
 		

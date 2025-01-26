@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      BuyoTheReturn_0: 6506615562877611033
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      BTTT_Logo_0: 4433506733127115888
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
