@@ -39,5 +39,6 @@ public class Pool
     {
         obj.SetActive(false);
         _objectPool.Enqueue(obj);
+        Debug.Log($"Enqueuing {obj.name}. Current queue number {_objectPool.Count}");
     }
 }

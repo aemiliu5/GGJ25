@@ -51,8 +51,20 @@ public class DeathBubble : MonoBehaviour {
         }
     }
 
-    private void OnBecameInvisible() {
-        _objectPoolItem.CleanUp();
+    private void Update()
+    {
+        if(IsDownAndInvisible())
+            _objectPoolItem.CleanUp();
+    }
+    
+
+    private bool IsDownAndInvisible()
+    {
+        Vector3 myPos = transform.position;
+        Vector3 playerPos = PlayerController.instance.transform.position;
+        float threshold = 30f;
+        
+        return Vector2.Distance(myPos, playerPos) > threshold && myPos.y < playerPos.y;
     }
 
     private bool IsTopSide(Collision2D collision)

@@ -79,7 +79,9 @@ public class ProcGenController : MonoBehaviour
         for (var i = initialIteration; i < iterations + initialIteration; i++)
         {
             var xValue = Random.Range(minXValue, maxXValue);
-            var yValue = Random.Range(minYOffset, maxYOffset) + i;
+            var yOffset = Random.Range(minYOffset, maxYOffset);
+            var yValue = _maxY + yOffset; // Add to the maximum Y of the last bubble
+
             var radius = Random.Range(minRadius, maxRadius);
 
             while (i != initialIteration && (Math.Abs(previousXValue - xValue) > 3.5f || Math.Abs(previousXValue - xValue) < 1f))
@@ -121,11 +123,12 @@ public class ProcGenController : MonoBehaviour
             previousXValue = xValue;
 
             if (_maxY <= yValue)
-                _maxY = yValue;
+                _maxY = yValue; // Update _maxY to the current bubble's Y-value
         }
 
         _isGenerating = false;
     }
+
 
 
     private void CheckForInvalidValues()

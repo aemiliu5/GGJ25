@@ -47,6 +47,18 @@ public class JailBubble : MonoBehaviour {
             _playerController.Simulated(true);
             _playerController.IsInJail = false;
         }
+        
+        if(IsDownAndInvisible())
+            _objectPoolItem.CleanUp();
+    }
+
+    private bool IsDownAndInvisible()
+    {
+        Vector3 myPos = transform.position;
+        Vector3 playerPos = PlayerController.instance.transform.position;
+        float threshold = 30f;
+        
+        return Vector2.Distance(myPos, playerPos) > threshold && myPos.y < playerPos.y;
     }
 
     private IEnumerator MovePlayerToCenter(GameObject gameObject, Action onComplete) {
@@ -60,9 +72,5 @@ public class JailBubble : MonoBehaviour {
         }
 
         onComplete?.Invoke();
-    }
-
-    private void OnBecameInvisible() {
-        _objectPoolItem.CleanUp();
     }
 }

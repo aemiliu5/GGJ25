@@ -42,13 +42,25 @@ public class Bubble : MonoBehaviour
         }
     }
 
-    private void OnBecameInvisible() {
-        initialSprite = spriteRenderer.sprite;
-        CleanUp();
+    private void Update()
+    {
+        if(IsDownAndInvisible())
+            CleanUp();
+    }
+
+    private bool IsDownAndInvisible()
+    {
+        Vector3 myPos = transform.position;
+        Vector3 playerPos = PlayerController.instance.transform.position;
+        float threshold = 30f;
+        
+        return Vector2.Distance(myPos, playerPos) > threshold && myPos.y < playerPos.y;
     }
 
     private void CleanUp()
     {
+        Debug.Log($"Bubble {gameObject.name} became invisible and is being cleaned up.");
+        spriteRenderer.sprite = initialSprite;
         _objectPoolItem?.CleanUp();
     }
 }
