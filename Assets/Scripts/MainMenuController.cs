@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEditor.PackageManager;
 
 public class MainMenuController : MonoBehaviour {
     [SerializeField] private List<GameObject> panels;

@@ -21,9 +21,13 @@ public class DeathBubble : MonoBehaviour {
             Debug.Log("LOSING");
             _animator.SetTrigger("explode");
             GameManager.instance.ChangeGameState(GameManager.GameState.LOST);
-            
+
+            MusicManager.instance.metal.Stop();
+            MusicManager.instance.floriko.Stop();
             AudioManager.instance.PlaySoundOnce(AudioManager.instance.bomb);
             AudioManager.instance.PlaySoundOnce(AudioManager.instance.ghost);
+
+            PlayerController.instance.GetComponent<BoxCollider2D>().enabled = false;
             
             if(!PlayerController.instance.ghostSpawned)
                 Instantiate(PlayerController.instance.ghostPrefab, collision.transform.position, Quaternion.identity);

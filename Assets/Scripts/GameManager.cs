@@ -1,6 +1,8 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -35,18 +37,22 @@ public class GameManager : MonoBehaviour
 
 	private void Update()
 	{
+		#if UNITY_ANDROID
 		if (currentGameState == GameState.BEFORE_PLAY)
 		{
-			if (Input.GetKeyDown(KeyCode.Space))
+			if (Input.touches.Length == 1)
 			{
 				StartGame();
 			}
 		}
-
-		// Restart
-		if (Input.GetKeyDown(KeyCode.R)) {
+		
+		if (Input.touches.Length > 2)
+		{
 			_sceneLoader.LoadScene(SceneName.SampleScene);
+
 		}
+		#endif
+		
 	}
 
 	public GameState currentGameState;
@@ -71,7 +77,10 @@ public class GameManager : MonoBehaviour
 
 	public void Lose()
 	{
-		loseCanvas.SetActive(true);
+		loseCanvas.GetComponent<CanvasGroup>().DOFade(1f, 1f);
+		MusicManager.instance.floriko.volume = 0f;
+		MusicManager.instance.metal.volume = 0f;
+		
 		scoreText.text = $"Game Over!\nScore: {ScoreManager.instance.scoreText.text}";
 		
 		currentGameState = GameState.LOST;
