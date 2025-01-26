@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class LoseCollider : MonoBehaviour
 {
@@ -6,6 +7,10 @@ public class LoseCollider : MonoBehaviour
 	{
 		Debug.Log("LOSING");
 		GameManager.instance.ChangeGameState(GameManager.GameState.LOST);
-		Destroy(collision.gameObject);
+		Instantiate(PlayerController.instance.ghostPrefab, collision.transform.position, Quaternion.identity);
+		collision.gameObject.transform.DOScale(Vector3.zero, 0.2f).OnComplete(() => 
+		{
+			Destroy(collision.gameObject);
+		});
 	}
 }

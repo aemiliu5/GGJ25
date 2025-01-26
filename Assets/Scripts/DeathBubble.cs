@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using DG.Tweening;
+
 public class DeathBubble : MonoBehaviour {
     [SerializeField] private float tweenDuration = 0.2f;
     [SerializeField] private float playerTweenDuration = 0.3f;
@@ -24,7 +26,11 @@ public class DeathBubble : MonoBehaviour {
             GameManager.instance.ChangeGameState(GameManager.GameState.LOST);
             StartCoroutine(TweenPlayer());
             StartCoroutine(TweenObject());
-            Destroy(collision.gameObject);
+            Instantiate(PlayerController.instance.ghostPrefab, collision.transform.position, Quaternion.identity);
+            collision.gameObject.transform.DOScale(Vector3.zero, 0.2f).OnComplete(() => 
+            {
+                Destroy(collision.gameObject);
+            });
         }
     }
 

@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour {
 	public float leftBound;
 	public float rightBound;
 
+	public GameObject ghostPrefab;
+
 	private Animator anim;
 	private Rigidbody2D rb;
 	private SpriteRenderer sr;
