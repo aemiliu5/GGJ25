@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -76,6 +77,8 @@ public class GameManager : MonoBehaviour
 		
 		currentGameState = GameState.LOST;
 		ScoreManager.instance.ApplyHighscore();
+		MusicManager.instance.floriko.volume = 0f;
+		MusicManager.instance.metal.volume = 0f;
 		AudioManager.instance.PlaySoundOnce(AudioManager.instance.loseMusic);
 		//Time.timeScale = 0;
 	}

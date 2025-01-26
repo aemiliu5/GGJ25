@@ -26,5 +26,6 @@ public class AudioManager : MonoBehaviour
 		AudioSource audioSource = soundObject.AddComponent<AudioSource>();
 		audioSource.PlayOneShot(clip);
 		soundObject.transform.position = Camera.main.transform.position;
+		Destroy(soundObject, clip.length);
 	}
 }
