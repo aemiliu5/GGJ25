@@ -35,7 +35,7 @@ public class ScoreManager : MonoBehaviour {
 		highscoreText.text = $"{HighScore}";
 
 		// Trigger Boost Mode only when streak transitions to a multiple of 5
-		if (streak % 5 == 0 && streak > 0 && streak != _lastCheckedStreak) {
+		if (streak % 12 == 0 && streak > 0 && streak != _lastCheckedStreak) {
 			PlayerController.instance.ActivateBoostMode();
 			_lastCheckedStreak = streak; // Update the last checked streak
 		}

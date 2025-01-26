@@ -1,7 +1,8 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,27 +28,35 @@ public class GameManager : MonoBehaviour
 		
 		instance = this;
 		ChangeGameState(GameState.BEFORE_PLAY);
-		loseCanvas.SetActive(false);
+		loseCanvas.GetComponent<CanvasGroup>().alpha = 0;
+		loseCanvas.GetComponent<CanvasGroup>().interactable = false;
 		
 		_sceneLoader = SceneLoader.Instance;
 
 		Application.targetFrameRate = 120;
+		PlayerDataProvider.Instance.ResetScore();
 	}
 
 	private void Update()
 	{
+		#if UNITY_ANDROID
 		if (currentGameState == GameState.BEFORE_PLAY)
 		{
-			if (Input.GetKeyDown(KeyCode.Space))
+			if (Input.touches.Length == 1)
 			{
 				StartGame();
 			}
 		}
-
-		// Restart
-		if (Input.GetKeyDown(KeyCode.R)) {
+		
+		if (Input.touches.Length > 2)
+		{
 			_sceneLoader.LoadScene(SceneName.SampleScene);
+
 		}
+		#endif
+
+		if (Input.GetKeyDown(KeyCode.F))
+			Lose();
 	}
 
 	public GameState currentGameState;
@@ -72,13 +81,15 @@ public class GameManager : MonoBehaviour
 
 	public void Lose()
 	{
-		loseCanvas.SetActive(true);
+		loseCanvas.GetComponent<CanvasGroup>().DOFade(1f, 1f);
+		loseCanvas.GetComponent<CanvasGroup>().interactable = true;
+		MusicManager.instance.floriko.volume = 0f;
+		MusicManager.instance.metal.volume = 0f;
+		
 		scoreText.text = $"Game Over!\nScore: {ScoreManager.instance.scoreText.text}";
 		
 		currentGameState = GameState.LOST;
 		ScoreManager.instance.ApplyHighscore();
-		MusicManager.instance.floriko.volume = 0f;
-		MusicManager.instance.metal.volume = 0f;
 		AudioManager.instance.PlaySoundOnce(AudioManager.instance.loseMusic);
 		//Time.timeScale = 0;
 	}

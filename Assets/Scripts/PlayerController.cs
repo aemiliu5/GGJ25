@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float boostUpwardForce = 10f;
     [SerializeField] private float birdDuration = 3f;
     [SerializeField] private float birdUpwardForce = 7f;
+    [SerializeField] private float sensitivity = 10f;
 
     public PlayerState currentState = PlayerState.Normal;
     private float _stateTimer = 0f;
@@ -73,15 +74,12 @@ public class PlayerController : MonoBehaviour {
     private void HandleNormalMovement() {
         Vector2 velocity = rb.linearVelocity;
 
-        if (Input.GetKey(KeyCode.A) && transform.position.x > leftBound) {
-            velocity.x = -horizontalSpeed;
-            sr.flipX = true;
-        } else if (Input.GetKey(KeyCode.D) && transform.position.x < rightBound) {
-            velocity.x = horizontalSpeed;
-            sr.flipX = false;
-        } else {
-            velocity.x = 0;
-        }
+        #if UNITY_ANDROID
+        var intendedVelocityX = Input.acceleration.x * sensitivity;
+        var newPositionX = transform.position.x + intendedVelocityX * Time.deltaTime;
+        newPositionX = Mathf.Clamp(newPositionX, leftBound, rightBound);
+        transform.position = new Vector3(newPositionX, transform.position.y, transform.position.z);
+        #endif
 
         rb.linearVelocity = velocity;
     }
