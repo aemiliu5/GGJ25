@@ -946,7 +946,11 @@ MonoBehaviour:
   yarnJumpForce: 12
   leftBound: -2.75
   rightBound: 2.75
-  ghostPrefab: {fileID: 0}
+  ghostPrefab: {fileID: 6365741318527260610, guid: af81e49988d203c4280a0f05b2501d8e, type: 3}
+  boostDuration: 10
+  boostUpwardForce: 10
+  birdDuration: 3
+  birdUpwardForce: 7
 --- !u!61 &533365289
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1688,6 +1692,7 @@ GameObject:
   - component: {fileID: 1307726322}
   - component: {fileID: 1307726323}
   - component: {fileID: 1307726324}
+  - component: {fileID: 1307726325}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1776,6 +1781,20 @@ MonoBehaviour:
   initialBackground: {fileID: 1039772376}
   playerTransform: {fileID: 533365287}
   preloadCount: 3
+--- !u!114 &1307726325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307726319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46676429c2f0503439ad1d215f15b55f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 533365283}
+  specificPrefab: {fileID: 4504832127636373306, guid: 2453b1031b9307744a31140a09a280e3, type: 3}
 --- !u!1 &1441845866
 GameObject:
   m_ObjectHideFlags: 0

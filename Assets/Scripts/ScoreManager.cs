@@ -30,6 +30,11 @@ public class ScoreManager : MonoBehaviour {
 		comboText.text = $"{streak}";
 		scoreText.text = $"{Score}";
 		highscoreText.text = $"{HighScore}";
+
+		if (streak > 5)
+		{
+			PlayerController.instance.ActivateBoostMode();
+		}
 		
 		if (Input.GetKeyDown(KeyCode.F7))
 			DeleteAllData();

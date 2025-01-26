@@ -119,7 +119,8 @@ public class ProcGenController : MonoBehaviour
             {
                 case "JailBubblePool": obj.transform.localScale = new Vector3(radius * 2.2f, radius * 2.2f, 0); break;
                 case "DeathBubblePool": obj.transform.localScale = new Vector3(radius * 1.5f, radius * 1.5f, 0); break;
-                case "BubbleManager": case "YarnBubblePool":  obj.transform.localScale = new Vector3(radius * 1f, radius * 1f, 0); break;
+                case "YarnBubblePool":  obj.transform.localScale = new Vector3(radius * 1.5f, radius * 1.5f, 0); break;
+                case "BubbleManager": obj.transform.localScale = new Vector3(radius * 1f, radius * 1f, 0); break;
             }
 
             previousXValue = xValue;
