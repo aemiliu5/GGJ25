@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
     public float leftBound;
     public float rightBound;
 
+    public bool ghostSpawned;
     public GameObject ghostPrefab;
 
     private Animator anim;
@@ -32,10 +33,11 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private float birdDuration = 3f;
     [SerializeField] private float birdUpwardForce = 7f;
 
-    private PlayerState _currentState = PlayerState.Normal;
+    public PlayerState currentState = PlayerState.Normal;
     private float _stateTimer = 0f;
 
-    private void Start() {
+    private void Start()
+    {
         if (instance != null)
             Destroy(instance.gameObject);
 
@@ -55,7 +57,7 @@ public class PlayerController : MonoBehaviour {
     private void Update() {
         if (IsInJail) { return; }
 
-        switch (_currentState) {
+        switch (currentState) {
             case PlayerState.Normal:
                 HandleNormalMovement();
                 break;
@@ -85,10 +87,14 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void HandleBoostingState() {
-        if (_stateTimer > 0) {
+        if (_stateTimer > 0) 
+        {
             rb.linearVelocity = new Vector2(0, boostUpwardForce);
             _stateTimer -= Time.deltaTime;
-        } else {
+            ScoreManager.instance.AddScore((int)(10 * Time.deltaTime));
+        } 
+        else 
+        {
             ExitBoostMode();
         }
     }
@@ -103,7 +109,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void Jump(JumpType jumpType = JumpType.Normal) {
-        if (_currentState != PlayerState.Normal) return;
+        if (currentState != PlayerState.Normal) return;
 
         anim.SetTrigger("col");
         rb.linearVelocityY = 0;
@@ -134,29 +140,31 @@ public class PlayerController : MonoBehaviour {
 
     // --- Boost Mode ---
     public void ActivateBoostMode() {
-        if (_currentState != PlayerState.Normal) return;
+        if (currentState != PlayerState.Normal) return;
 
-        _currentState = PlayerState.Boosting;
+        currentState = PlayerState.Boosting;
+        GetComponent<BoxCollider2D>().enabled = false;
         _stateTimer = boostDuration;
         anim.SetTrigger("boost");
     }
 
     private void ExitBoostMode() {
-        _currentState = PlayerState.Normal;
+        currentState = PlayerState.Normal;
+        GetComponent<BoxCollider2D>().enabled = true;
         rb.linearVelocity = Vector2.zero; // Reset velocity
     }
 
     // --- Bird Mode ---
     public void ActivateBirdMode() {
-        if (_currentState != PlayerState.Normal) return;
+        if (currentState != PlayerState.Normal) return;
 
-        _currentState = PlayerState.Birding;
+        currentState = PlayerState.Birding;
         _stateTimer = birdDuration;
         anim.SetTrigger("birding");
     }
 
     private void ExitBirdMode() {
-        _currentState = PlayerState.Normal;
+        currentState = PlayerState.Normal;
         rb.linearVelocity = Vector2.zero; // Reset velocity
     }
 }

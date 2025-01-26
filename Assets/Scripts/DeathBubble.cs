@@ -25,9 +25,11 @@ public class DeathBubble : MonoBehaviour {
             _animator.SetTrigger("explode");
             GameManager.instance.ChangeGameState(GameManager.GameState.LOST);
             StartCoroutine(TweenPlayer());
-            StartCoroutine(TweenObject());
-            Instantiate(PlayerController.instance.ghostPrefab, collision.transform.position, Quaternion.identity);
-            collision.gameObject.transform.DOScale(Vector3.zero, 0.2f).OnComplete(() => 
+            
+            if(!PlayerController.instance.ghostSpawned)
+                Instantiate(PlayerController.instance.ghostPrefab, collision.transform.position, Quaternion.identity);
+            
+            collision.gameObject.transform.DOScale(Vector3.zero, 1f).OnComplete(() => 
             {
                 Destroy(collision.gameObject);
             });
@@ -46,21 +48,13 @@ public class DeathBubble : MonoBehaviour {
         }
     }
 
-    private IEnumerator TweenObject() {
-        yield return new WaitForSeconds(1.5f);
-        var startingScale = Vector2.one * 0.3f;
-        while (transform.localScale.x > 0) {
-            _currentTweenTime += Time.deltaTime;
-            float t = _currentTweenTime / tweenDuration;
-            transform.localScale = Vector2.Lerp(startingScale, Vector2.zero, t);
-            yield return null;
-        }
-    }
-
     private void Update()
     {
-        if(IsDownAndInvisible())
-            _objectPoolItem.CleanUp();
+        if (GameManager.instance.currentGameState == GameManager.GameState.PLAY)
+        {
+            if(IsDownAndInvisible())
+                _objectPoolItem.CleanUp();
+        }
     }
     
 

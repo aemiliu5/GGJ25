@@ -53,8 +53,11 @@ public class YarnBubble : MonoBehaviour {
 
     private void Update()
     {
-        if(IsDownAndInvisible())
-            _objectPoolItem.CleanUp();
+        if (GameManager.instance.currentGameState == GameManager.GameState.PLAY)
+        {
+            if(IsDownAndInvisible())
+                _objectPoolItem.CleanUp();
+        }
     }
 
     private bool IsDownAndInvisible()

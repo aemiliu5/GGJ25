@@ -12,9 +12,19 @@ public class BackgroundRepeater : MonoBehaviour
     [Tooltip("Number of backgrounds to preload initially.")]
     [SerializeField] private int preloadCount = 3;
 
+    [Tooltip("The normal background sprite.")]
+    [SerializeField] private Sprite normalBackground;
+
+    [Tooltip("The boost background sprite.")]
+    [SerializeField] private Sprite boostBackground;
+
+    [Tooltip("The flames GameObject to toggle during Boost mode.")]
+    [SerializeField] private GameObject flames;
+
     private float _backgroundHeight;
     private float _lastSpawnY;
     private readonly Queue<GameObject> _activeBackgrounds = new Queue<GameObject>();
+    private bool isBoostMode = false;
 
     private void Start()
     {
@@ -46,6 +56,22 @@ public class BackgroundRepeater : MonoBehaviour
             SpawnBackground(_lastSpawnY + _backgroundHeight);
             RemoveOldBackground(); // Clean up old backgrounds if needed
         }
+
+        // Check for Boost mode
+        if (PlayerController.instance.currentState == PlayerController.PlayerState.Boosting)
+        {
+            if (!isBoostMode)
+            {
+                ToggleBoostMode(true);
+            }
+        }
+        else
+        {
+            if (isBoostMode)
+            {
+                ToggleBoostMode(false);
+            }
+        }
     }
 
     private void SpawnBackground(float yPos)
@@ -64,6 +90,20 @@ public class BackgroundRepeater : MonoBehaviour
         {
             var oldBackground = _activeBackgrounds.Dequeue();
             Destroy(oldBackground);
+        }
+    }
+
+    private void ToggleBoostMode(bool activate)
+    {
+        isBoostMode = activate;
+        flames.SetActive(activate);
+
+        foreach (var spriteRenderer in FindObjectsOfType<SpriteRenderer>())
+        {
+            if (spriteRenderer.gameObject.name.Contains("Background"))
+            {
+                spriteRenderer.sprite = activate ? boostBackground : normalBackground;
+            }
         }
     }
 }

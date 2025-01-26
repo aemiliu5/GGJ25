@@ -16,7 +16,8 @@ public class Bubble : MonoBehaviour
 
     private void OnEnable() {
         _objectPoolItem ??= GetComponent<ObjectPoolItem>();
-        customSpriteAnim.ResetAnim();
+        if(customSpriteAnim != null)
+            customSpriteAnim.ResetAnim();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -46,8 +47,11 @@ public class Bubble : MonoBehaviour
 
     private void Update()
     {
-        if(IsDownAndInvisible())
-            CleanUp();
+        if (GameManager.instance.currentGameState == GameManager.GameState.PLAY)
+        {
+            if(IsDownAndInvisible())
+                CleanUp();
+        }
     }
 
     private bool IsDownAndInvisible()

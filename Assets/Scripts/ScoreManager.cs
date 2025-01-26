@@ -15,13 +15,16 @@ public class ScoreManager : MonoBehaviour {
 	private int HighScore => _playerDataProvider != null ? _playerDataProvider.HighScore : 0;
 	private int Score => _playerDataProvider != null ? _playerDataProvider.CurrentScore : 0;
 
-	private void Start()
-	{
+	private int _lastCheckedStreak; // New field to track the previous streak value
+
+	private void Start() {
 		if (instance != null)
 			Destroy(instance.gameObject);
 
 		instance = this;
 		_playerDataProvider = PlayerDataProvider.Instance;
+
+		_lastCheckedStreak = 0; // Initialize the last checked streak
 	}
 
 	public void Update() {
@@ -31,11 +34,12 @@ public class ScoreManager : MonoBehaviour {
 		scoreText.text = $"{Score}";
 		highscoreText.text = $"{HighScore}";
 
-		if (streak > 5)
-		{
+		// Trigger Boost Mode only when streak transitions to a multiple of 5
+		if (streak % 5 == 0 && streak > 0 && streak != _lastCheckedStreak) {
 			PlayerController.instance.ActivateBoostMode();
+			_lastCheckedStreak = streak; // Update the last checked streak
 		}
-		
+
 		if (Input.GetKeyDown(KeyCode.F7))
 			DeleteAllData();
 	}
@@ -44,13 +48,13 @@ public class ScoreManager : MonoBehaviour {
 		streak++;
 	}
 
-	public void ResetStreak()
-	{
+	public void ResetStreak() {
 		streak = 0;
+		_lastCheckedStreak = 0; // Reset last checked streak to avoid triggering Boost Mode incorrectly
 	}
 
 	public void AddScore(int s) {
-		_playerDataProvider.IncreasePlayerScore(s); 
+		_playerDataProvider.IncreasePlayerScore(s);
 	}
 
 	public void DeleteAllData() {

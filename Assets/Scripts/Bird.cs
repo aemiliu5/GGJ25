@@ -9,8 +9,9 @@ public class Bird : MonoBehaviour
 		transform.Translate(speed, 0, 0);
 	}
 
-	private void OnCollisionEnter2D(Collision2D other)
+	private void OnTriggerEnter2D(Collider2D col)
 	{
 		Destroy(gameObject);
+		PlayerController.instance.ActivateBirdMode();
 	}
 }

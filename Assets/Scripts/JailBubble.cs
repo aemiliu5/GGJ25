@@ -54,8 +54,11 @@ public class JailBubble : MonoBehaviour {
             transform.Translate(0, -0.5f * Time.deltaTime, 0);
         }
         
-        if(IsDownAndInvisible())
-            _objectPoolItem.CleanUp();
+        if (GameManager.instance.currentGameState == GameManager.GameState.PLAY)
+        {
+            if(IsDownAndInvisible())
+                _objectPoolItem.CleanUp();
+        }
     }
 
     private bool IsDownAndInvisible()

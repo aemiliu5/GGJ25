@@ -5,10 +5,10 @@ public class PrefabSpawner : MonoBehaviour
 	public GameObject player;
 	public GameObject specificPrefab;
 
-	private float lastYPosition;
-	private const float threshold = 20f;
-	private const float spawnHeight = 10f;
-	private const float spawnChance = 0.3f; // 30% chance
+	public float lastYPosition;
+	public float threshold = 20f;
+	public float spawnHeight = 10f;
+	public float spawnChance = 0.3f; // 30% chance
 
 	private void Start()
 	{
