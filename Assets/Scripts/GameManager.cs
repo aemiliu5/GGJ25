@@ -4,6 +4,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+	[SerializeField] private GameObject loseCanvas;
+	[SerializeField] private TextMeshProUGUI scoreText;
+	
 	public enum GameState
 	{
 		BEFORE_PLAY,
@@ -23,8 +26,11 @@ public class GameManager : MonoBehaviour
 		
 		instance = this;
 		ChangeGameState(GameState.BEFORE_PLAY);
+		loseCanvas.SetActive(false);
 		
 		_sceneLoader = SceneLoader.Instance;
+
+		Application.targetFrameRate = 120;
 	}
 
 	private void Update()
@@ -65,7 +71,9 @@ public class GameManager : MonoBehaviour
 
 	public void Lose()
 	{
-		// show losing UI
+		loseCanvas.SetActive(true);
+		scoreText.text = $"Game Over!\nScore: {ScoreManager.instance.scoreText.text}";
+		
 		currentGameState = GameState.LOST;
 		ScoreManager.instance.ApplyHighscore();
 		AudioManager.instance.PlaySoundOnce(AudioManager.instance.loseMusic);
