@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour {
 
 	public float horizontalSpeed;
 	public float jumpForce;
+	public float initialJumpForce;
 	[SerializeField] private float jailJumpForce = 12;
 	[SerializeField] private float yarnJumpForce = 12;
 
@@ -81,7 +82,7 @@ public class PlayerController : MonoBehaviour {
 	public void LaunchCatUpwards()
 	{
 		Debug.Log("Will launch cat upwards!");
-		rb.AddForce(new Vector2(0, jumpForce * 2), ForceMode2D.Impulse);
+		rb.AddForce(new Vector2(0, initialJumpForce), ForceMode2D.Impulse);
 	}
 
 	public void Simulated(bool simulated) {

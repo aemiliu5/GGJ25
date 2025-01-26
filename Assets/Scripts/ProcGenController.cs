@@ -79,7 +79,7 @@ public class ProcGenController : MonoBehaviour
         for (var i = initialIteration; i < iterations + initialIteration; i++)
         {
             var xValue = Random.Range(minXValue, maxXValue);
-            var yValue = Random.Range(minYOffset, maxYOffset) * i;
+            var yValue = Random.Range(minYOffset, maxYOffset) + i;
             var radius = Random.Range(minRadius, maxRadius);
 
             while (i != initialIteration && (Math.Abs(previousXValue - xValue) > 3.5f || Math.Abs(previousXValue - xValue) < 1f))

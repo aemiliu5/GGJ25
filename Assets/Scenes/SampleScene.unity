@@ -1027,7 +1027,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   horizontalSpeed: 3
-  jumpForce: 7
+  jumpForce: 9
+  initialJumpForce: 14
   jailJumpForce: 12
   yarnJumpForce: 12
   leftBound: -2.75
