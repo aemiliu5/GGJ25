@@ -39,7 +39,23 @@ public class GameManager : MonoBehaviour
 
 	private void Update()
 	{
-		#if UNITY_ANDROID
+		#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBGL
+		if (currentGameState == GameState.BEFORE_PLAY)
+		{
+			if (Input.GetKeyDown(KeyCode.Space))
+			{
+				StartGame();
+			}
+		}
+
+		// Restart
+		if (Input.GetKeyDown(KeyCode.R)) {
+			_sceneLoader.LoadScene(SceneName.SampleScene);
+		}
+		
+		if (Input.GetKeyDown(KeyCode.F))
+			Lose();
+		#elif UNITY_ANDROID
 		if (currentGameState == GameState.BEFORE_PLAY)
 		{
 			if (Input.touches.Length == 1)
@@ -54,9 +70,6 @@ public class GameManager : MonoBehaviour
 
 		}
 		#endif
-
-		if (Input.GetKeyDown(KeyCode.F))
-			Lose();
 	}
 
 	public GameState currentGameState;

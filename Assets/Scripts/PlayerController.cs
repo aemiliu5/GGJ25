@@ -73,10 +73,26 @@ public class PlayerController : MonoBehaviour {
 
     private void HandleNormalMovement() {
         Vector2 velocity = rb.linearVelocity;
-
-        #if UNITY_ANDROID
+        
+        #if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBGL
+        if (Input.GetKey(KeyCode.A) && transform.position.x > leftBound)
+        {
+            velocity.x = -horizontalSpeed;
+            sr.flipX = true;
+        }
+        else if (Input.GetKey(KeyCode.D) && transform.position.x < rightBound)
+        {
+            velocity.x = horizontalSpeed;
+            sr.flipX = false;
+        }
+        else
+        {
+            velocity.x = 0;
+        }
+        #elif UNITY_ANDROID
         var intendedVelocityX = Input.acceleration.x * sensitivity;
         var newPositionX = transform.position.x + intendedVelocityX * Time.deltaTime;
+        sr.flipX = (Input.acceleration.x < 0);
         newPositionX = Mathf.Clamp(newPositionX, leftBound, rightBound);
         transform.position = new Vector3(newPositionX, transform.position.y, transform.position.z);
         #endif
@@ -87,7 +103,32 @@ public class PlayerController : MonoBehaviour {
     private void HandleBoostingState() {
         if (_stateTimer > 0) 
         {
-            rb.linearVelocity = new Vector2(0, boostUpwardForce);
+            Vector2 velocity = rb.linearVelocity;
+        
+            #if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBGL
+                    if (Input.GetKey(KeyCode.A) && transform.position.x > leftBound)
+                    {
+                        velocity.x = -horizontalSpeed;
+                        sr.flipX = true;
+                    }
+                    else if (Input.GetKey(KeyCode.D) && transform.position.x < rightBound)
+                    {
+                        velocity.x = horizontalSpeed;
+                        sr.flipX = false;
+                    }
+                    else
+                    {
+                        velocity.x = 0;
+                    }
+            #elif UNITY_ANDROID
+                    var intendedVelocityX = Input.acceleration.x * sensitivity;
+                    var newPositionX = transform.position.x + intendedVelocityX * Time.deltaTime;
+                    sr.flipX = (Input.acceleration.x < 0);
+                    newPositionX = Mathf.Clamp(newPositionX, leftBound, rightBound);
+                    transform.position = new Vector3(newPositionX, transform.position.y, transform.position.z);
+            #endif
+
+            rb.linearVelocity = new Vector2(velocity.x, boostUpwardForce);
             _stateTimer -= Time.deltaTime;
             ScoreManager.instance.AddScore(3);
         } 
@@ -143,7 +184,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (currentState != PlayerState.Normal) return;
         currentState = PlayerState.Boosting;
-        GetComponent<BoxCollider2D>().enabled = false;
+        GetComponent<BoxCollider2D>().isTrigger = true;
         MusicManager.instance.metal.volume = 1f;
         MusicManager.instance.floriko.volume = 0.8f;
         AudioManager.instance.PlaySoundOnce(AudioManager.instance.purr);
@@ -153,7 +194,7 @@ public class PlayerController : MonoBehaviour {
 
     private void ExitBoostMode() {
         currentState = PlayerState.Normal;
-        GetComponent<BoxCollider2D>().enabled = true;
+        GetComponent<BoxCollider2D>().isTrigger = false;
         MusicManager.instance.metal.volume = 0f;
         MusicManager.instance.floriko.volume = 1f;
         rb.linearVelocity = Vector2.zero; // Reset velocity

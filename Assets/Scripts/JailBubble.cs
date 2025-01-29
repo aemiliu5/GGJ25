@@ -32,7 +32,12 @@ public class JailBubble : MonoBehaviour {
         if (_playerController == null) return;
         if (!_playerController.IsInJail) return;
 
-        #if UNITY_ANDROID
+        #if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBGL
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _jailCounter++;
+        }
+        #elif UNITY_ANDROID
         if (Input.touches.Length == 1)
         {
             _jailCounter++;

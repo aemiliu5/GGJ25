@@ -39,7 +39,7 @@ public class Bubble : MonoBehaviour
 
         if (direction.y < 0)
         {
-            int random = UnityEngine.Random.Range(0, 1);
+            int random = UnityEngine.Random.Range(0, 2);
             AudioManager.instance.PlaySoundOnce(random == 1 ? AudioManager.instance.popBubble : AudioManager.instance.popBubble2);
             PlayerController.instance.Jump();
             ScoreManager.instance.AddScore(10);

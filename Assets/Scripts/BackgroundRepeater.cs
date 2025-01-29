@@ -50,6 +50,8 @@ public class BackgroundRepeater : MonoBehaviour
 
     private void Update()
     {
+        if (playerTransform == null) return;
+        
         // Check if the player is approaching the topmost background
         if (playerTransform.position.y + _backgroundHeight > _lastSpawnY)
         {

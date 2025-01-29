@@ -57,8 +57,10 @@ public class ProcGenController : MonoBehaviour
         InitializeBubbles();
     }
 
-    private void Update() 
+    private void Update()
     {
+        if (playerPos == null) return;
+        
         if (Math.Abs(playerPos.position.y - _maxY) <= MaxSpawnRadiusProximity && !_isGenerating)
         {
             Debug.Log("GOT TO THE TOP! Reloading bubbles");
