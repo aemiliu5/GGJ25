@@ -32,7 +32,7 @@ public class MainMenuController : MonoBehaviour {
     private IEnumerator GuitarSlideThenPlay()
     {
         guitarSlide.Play();
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(guitarSlide.clip.length);
         LoadGameplayScene();
     }
 

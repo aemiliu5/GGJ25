@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -76,13 +77,16 @@ public class GameManager : MonoBehaviour
 
 	public void ChangeGameState(GameState newGameState)
 	{
-		currentGameState = newGameState;
-		//Time.timeScale = (currentGameState == GameState.PLAY || currentGameState == GameState.BEFORE_PLAY) ? 1 : 0;
+		if (currentGameState != newGameState)
+		{
+			currentGameState = newGameState;
+			//Time.timeScale = (currentGameState == GameState.PLAY || currentGameState == GameState.BEFORE_PLAY) ? 1 : 0;
 
-		if (currentGameState == GameState.LOST) {
-            Lose();
-        }
-    }
+			if (currentGameState == GameState.LOST) {
+				Lose();
+			}
+		}
+	}
 
 	public void StartGame()
 	{
@@ -94,7 +98,7 @@ public class GameManager : MonoBehaviour
 
 	public void Lose()
 	{
-		loseCanvas.GetComponent<CanvasGroup>().DOFade(1f, 1f);
+		loseCanvas.GetComponent<CanvasGroup>().DOFade(1f, 1f).SetDelay(0.6f);
 		loseCanvas.GetComponent<CanvasGroup>().interactable = true;
 		MusicManager.instance.floriko.volume = 0f;
 		MusicManager.instance.metal.volume = 0f;

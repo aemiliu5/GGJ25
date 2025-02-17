@@ -25,6 +25,7 @@ public class CustomSpriteAnim : MonoBehaviour
 	public void ResetAnim()
 	{
 		_spriteRenderer.sprite = sprites[0];
+		_currentIndex = 0;
 	}
 
 	private IEnumerator PlayAnimRoutine() {

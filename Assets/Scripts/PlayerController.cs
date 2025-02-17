@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
@@ -69,6 +70,8 @@ public class PlayerController : MonoBehaviour {
                 HandleBirdingState();
                 break;
         }
+        
+        //Debug.Log($"VELOCITY: {rb.linearVelocity}");
     }
 
     private void HandleNormalMovement() {
@@ -142,6 +145,7 @@ public class PlayerController : MonoBehaviour {
         if (_stateTimer > 0) {
             rb.linearVelocity = new Vector2(0, birdUpwardForce);
             _stateTimer -= Time.deltaTime;
+            ScoreManager.instance.AddScore(1);
         } else {
             ExitBirdMode();
         }
@@ -171,11 +175,13 @@ public class PlayerController : MonoBehaviour {
 
     public void TriggerYarn() {
         AudioManager.instance.PlaySoundOnce(AudioManager.instance.excited);
+        rb.linearVelocity = Vector3.zero;
         anim.SetTrigger("yarn");
     }
 
     public void TriggerJail() {
         AudioManager.instance.PlaySoundOnce(AudioManager.instance.jailBubble);
+        rb.linearVelocity = Vector3.zero;
         anim.SetTrigger("jailed");
     }
 
@@ -185,6 +191,7 @@ public class PlayerController : MonoBehaviour {
         if (currentState != PlayerState.Normal) return;
         currentState = PlayerState.Boosting;
         GetComponent<BoxCollider2D>().isTrigger = true;
+        FindAnyObjectByType<CinemachineBasicMultiChannelPerlin>().enabled = true;
         MusicManager.instance.metal.volume = 1f;
         MusicManager.instance.floriko.volume = 0.8f;
         AudioManager.instance.PlaySoundOnce(AudioManager.instance.purr);
@@ -195,15 +202,18 @@ public class PlayerController : MonoBehaviour {
     private void ExitBoostMode() {
         currentState = PlayerState.Normal;
         GetComponent<BoxCollider2D>().isTrigger = false;
+        FindAnyObjectByType<CinemachineBasicMultiChannelPerlin>().enabled = false;
         MusicManager.instance.metal.volume = 0f;
         MusicManager.instance.floriko.volume = 1f;
         rb.linearVelocity = Vector2.zero; // Reset velocity
+        anim.SetTrigger("col");
     }
 
     // --- Bird Mode ---
     public void ActivateBirdMode() {
         if (currentState != PlayerState.Normal) return;
 
+        GetComponent<BoxCollider2D>().isTrigger = true;
         currentState = PlayerState.Birding;
         _stateTimer = birdDuration;
         anim.SetTrigger("birding");
@@ -211,6 +221,9 @@ public class PlayerController : MonoBehaviour {
 
     private void ExitBirdMode() {
         currentState = PlayerState.Normal;
+        GetComponent<BoxCollider2D>().isTrigger = false;
         rb.linearVelocity = Vector2.zero; // Reset velocity
+        anim.SetTrigger("col");
+       
     }
 }

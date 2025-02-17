@@ -12,6 +12,7 @@ public class AudioManager : MonoBehaviour
 	public AudioClip excited;
 	public AudioClip purr;
 	public AudioClip loseMusic;
+	public AudioClip wingFlap;
 	
 	public static AudioManager instance;
 

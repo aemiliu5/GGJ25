@@ -13,18 +13,22 @@ public class YarnBubble : MonoBehaviour {
 
     private float _currentRePositionTime = 0.0f;
 
+    private bool isBeingCleanedUp;
+
     private void OnEnable() {
         _center = GetComponent<Collider2D>().bounds.center;
         _objectPoolItem = GetComponent<ObjectPoolItem>();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) {
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
         _playerController = collision.gameObject.GetComponent<PlayerController>();
         StartCoroutine(MovePlayerToCenter(collision.gameObject, () => {
             _playerController.TriggerYarn();
             StartCoroutine(LaunchAfterTime());
         }));
 
+        _playerController.GetComponent<Rigidbody2D>().linearVelocity = Vector3.zero;
         _playerController.Simulated(false);
         _playerController.IsInJail = true;
     }
@@ -35,7 +39,7 @@ public class YarnBubble : MonoBehaviour {
         _playerController.Jump(PlayerController.JumpType.Yarn);
         _playerController.Simulated(true);
         _playerController.IsInJail = false;
-        _objectPoolItem.CleanUp();
+        CleanUp();
     }
 
     private IEnumerator MovePlayerToCenter(GameObject gameObject, Action onComplete) {
@@ -55,8 +59,10 @@ public class YarnBubble : MonoBehaviour {
     {
         if (GameManager.instance.currentGameState == GameManager.GameState.PLAY)
         {
-            if(IsDownAndInvisible())
-                _objectPoolItem.CleanUp();
+            if (IsDownAndInvisible() && !_objectPoolItem.isBeingCleanedUp)
+            {
+                CleanUp();
+            }
         }
     }
 
@@ -82,5 +88,30 @@ public class YarnBubble : MonoBehaviour {
         }
 
         return false;
+    }
+    
+    public void CleanUp()
+    {
+        if (_objectPoolItem == null)
+        {
+            Debug.LogError($"Bubble {gameObject.name} has no ObjectPoolItem reference!");
+            Destroy(gameObject);
+            return;
+        }
+
+        if (_objectPoolItem.isBeingCleanedUp)
+        {
+            Debug.LogWarning($"{gameObject.name} is already being cleaned up!");
+            return;
+        }
+
+        _objectPoolItem.isBeingCleanedUp = true;
+        _playerController = null;
+        _currentRePositionTime = 0;
+
+        Debug.Log($"Returning {gameObject.name} to pool.");
+        _objectPoolItem.CleanUp();
+        
+        _objectPoolItem.isBeingCleanedUp = false;
     }
 }

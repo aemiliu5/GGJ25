@@ -22,16 +22,39 @@ public class Pool
         {
             var objectInstance = Object.Instantiate(_poolData.gameObject, _objectHolder);
             objectInstance.SetActive(false);
-            objectInstance.GetComponent<ObjectPoolItem>().Init(this);
+        
+            var poolItem = objectInstance.GetComponent<ObjectPoolItem>();
+            if (poolItem == null)
+            {
+                Debug.LogError("Missing ObjectPoolItem component!");
+                continue;
+            }
+
+            poolItem.Init(this);
             _objectPool.Enqueue(objectInstance);
         }
     }
 
+
     public GameObject RetrieveFromPool(Vector2 pos)
     {
+        Debug.Log($"Retrieving from pool. Current size before dequeue: {_objectPool.Count}");
+
+        if (_objectPool.Count == 0)
+        {
+            Debug.LogWarning("Pool is empty! Instantiating new object.");
+            var newObj = Object.Instantiate(_poolData.gameObject, _objectHolder);
+            newObj.GetComponent<ObjectPoolItem>().Init(this);
+            newObj.transform.position = new Vector3(pos.x, pos.y, 0.0f);
+            newObj.SetActive(true);
+            return newObj;
+        }
+
         var obj = _objectPool.Dequeue();
         obj.transform.position = new Vector3(pos.x, pos.y, 0.0f);
         obj.SetActive(true);
+        Debug.Log($"Object retrieved. Pool size after dequeue: {_objectPool.Count}");
+
         return obj;
     }
 
@@ -39,6 +62,16 @@ public class Pool
     {
         obj.SetActive(false);
         _objectPool.Enqueue(obj);
-        Debug.Log($"Enqueuing {obj.name}. Current queue number {_objectPool.Count}");
+        Debug.Log($"Returned {obj.name} to pool. Pool size after enqueue: {_objectPool.Count}");
     }
+
+
+
+    public int Count()
+    {
+        return _objectPool.Count;
+    }
+
+
+
 }

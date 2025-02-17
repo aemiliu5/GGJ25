@@ -20,7 +20,7 @@ public class PrefabSpawner : MonoBehaviour
 
 	private void Update()
 	{
-		if (player != null)
+		if (player != null && player.transform.position.y - lastYPosition >= threshold)
 		{
 			CheckForSpawn();
 		}
@@ -28,16 +28,23 @@ public class PrefabSpawner : MonoBehaviour
 
 	private void CheckForSpawn()
 	{
-		if (player.transform.position.y - lastYPosition >= threshold)
-		{
-			lastYPosition = player.transform.position.y;
+		lastYPosition = player.transform.position.y;
 
-			if (Random.value <= spawnChance)
-			{
-				Vector3 spawnPosition = new Vector3(player.transform.position.x, player.transform.position.y + spawnHeight, 0);
-				Instantiate(specificPrefab, spawnPosition, Quaternion.identity);
-				AudioManager.instance.PlaySoundOnce(AudioManager.instance.bird);
-			}
+		if (Random.value <= spawnChance)
+		{
+			bool movingRight = IntToBool(Random.Range(0, 2));
+			float x = movingRight ? player.transform.position.x - 5 : player.transform.position.x + 5;
+			Vector3 spawnPosition = new Vector3(x, player.transform.position.y + spawnHeight, 0);
+			GameObject bird = Instantiate(specificPrefab, spawnPosition, Quaternion.identity);
+			Bird birdComponent = bird.GetComponent<Bird>();
+			birdComponent.movingRight = movingRight;
+			birdComponent.speed *= Random.Range(1f, 1.5f);
+			AudioManager.instance.PlaySoundOnce(AudioManager.instance.bird);
 		}
+	}
+
+	private static bool IntToBool(int i)
+	{
+		return i != 0;
 	}
 }

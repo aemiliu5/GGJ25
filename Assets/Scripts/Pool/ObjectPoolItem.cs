@@ -1,6 +1,8 @@
+using System.Collections;
 using UnityEngine;
 public class ObjectPoolItem : MonoBehaviour {
 	private Pool _owner;
+	public bool isBeingCleanedUp;
 
 	public void Init(Pool owner) {
 		_owner = owner;

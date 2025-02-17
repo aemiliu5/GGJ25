@@ -52,24 +52,43 @@ public class Bubble : MonoBehaviour
     {
         if (GameManager.instance.currentGameState == GameManager.GameState.PLAY)
         {
-            if(IsDownAndInvisible())
+            if(IsDownAndInvisible() && !_objectPoolItem.isBeingCleanedUp)
                 CleanUp();
         }
     }
 
     private bool IsDownAndInvisible()
     {
-        Vector3 myPos = transform.position;
-        Vector3 playerPos = PlayerController.instance.transform.position;
-        float threshold = 30f;
+        float myY = transform.position.y;
+        float playerY = PlayerController.instance.transform.position.y;
+        float threshold = 20f;
+
+        float distance = Mathf.Abs(myY - playerY); // Distance along the Y-axis
         
-        return Vector2.Distance(myPos, playerPos) > threshold && myPos.y < playerPos.y;
+        return distance > threshold && myY < playerY;
     }
 
-    private void CleanUp()
+    public void CleanUp()
     {
-        Debug.Log($"Bubble {gameObject.name} became invisible and is being cleaned up.");
-        customSpriteAnim.ResetAnim();
-        _objectPoolItem?.CleanUp();
+        if (_objectPoolItem == null)
+        {
+            Debug.LogError($"Bubble {gameObject.name} has no ObjectPoolItem reference!");
+            Destroy(gameObject);
+            return;
+        }
+
+        if (_objectPoolItem.isBeingCleanedUp)
+        {
+            Debug.LogWarning($"{gameObject.name} is already being cleaned up!");
+            return;
+        }
+
+        _objectPoolItem.isBeingCleanedUp = true;
+
+        Debug.Log($"Returning {gameObject.name} to pool.");
+        _objectPoolItem.CleanUp();
+        
+        _objectPoolItem.isBeingCleanedUp = false;
     }
+
 }

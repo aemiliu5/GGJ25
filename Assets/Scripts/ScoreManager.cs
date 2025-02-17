@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Serialization;
@@ -46,15 +47,21 @@ public class ScoreManager : MonoBehaviour {
 
 	public void AddStreak() {
 		streak++;
+		comboText.rectTransform.DOScale(Vector3.one * 1.1f, 0.1f).OnComplete(() => comboText.rectTransform.DOScale(Vector3.one, 0.1f));
 	}
 
 	public void ResetStreak() {
 		streak = 0;
 		_lastCheckedStreak = 0; // Reset last checked streak to avoid triggering Boost Mode incorrectly
+		comboText.rectTransform.DOShakePosition(0.25f, new Vector3(15f, 0, 0)).SetEase(Ease.InOutSine);
+		comboText.DOColor(Color.red, 0.1f).OnComplete(() => comboText.DOColor(Color.white, 0.1f));
+
 	}
 
 	public void AddScore(int s) {
 		_playerDataProvider.IncreasePlayerScore(s);
+		scoreText.rectTransform.DOScale(Vector3.one * 1.1f, 0.1f).OnComplete(() => scoreText.rectTransform.DOScale(Vector3.one, 0.1f));
+
 	}
 
 	public void DeleteAllData() {

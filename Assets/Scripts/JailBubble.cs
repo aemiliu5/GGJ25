@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class JailBubble : MonoBehaviour {
     [SerializeField] private float rePositionTime = 0.2f;
@@ -11,12 +13,14 @@ public class JailBubble : MonoBehaviour {
     private ObjectPoolItem _objectPoolItem;
 
     private PlayerController _playerController;
-
+    private Camera _mainCamera;
     private float _currentRePositionTime = 0.0f;
 
     private void OnEnable() {
+        //_playerController = PlayerController.instance;
         _center = GetComponent<Collider2D>().bounds.center;
         _objectPoolItem = GetComponent<ObjectPoolItem>();
+        _mainCamera = Camera.main;
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
@@ -24,12 +28,24 @@ public class JailBubble : MonoBehaviour {
         StartCoroutine(MovePlayerToCenter(collision.gameObject, () => {
             _playerController.TriggerJail();
         }));
+ 
         _playerController.Simulated(false);
         _playerController.IsInJail = true;
     }
 
     private void Update() {
+        if (GameManager.instance.currentGameState == GameManager.GameState.PLAY)
+        {
+            if (IsDownAndInvisible() && !_objectPoolItem.isBeingCleanedUp)
+            {
+                CleanUp();
+            }
+        }
+        
         if (_playerController == null) return;
+        
+
+        
         if (!_playerController.IsInJail) return;
 
         #if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBGL
@@ -43,40 +59,39 @@ public class JailBubble : MonoBehaviour {
             _jailCounter++;
         }
         #endif
+        
+        if (_playerController.IsInJail)
+        {
+            _playerController.transform.Translate(0, -1f * Time.deltaTime, 0);
+            transform.Translate(0, -1f * Time.deltaTime, 0);
+            FindObjectOfType<Light2D>().color -= new Color(0.0005f, 0.001f, 0.001f, 0f);
+
+            if (_playerController.transform.position.y < _mainCamera.transform.position.y - 8f)
+                GameManager.instance.ChangeGameState(GameManager.GameState.LOST);
+        }
 
         if (_jailCounter >= jailBreakCounter) {
             PlayerController.instance.Jump(PlayerController.JumpType.Jail);
-
-            ScoreManager.instance.AddScore(10);
             ScoreManager.instance.ResetStreak();
-            _objectPoolItem.CleanUp();
             Debug.Log("Collided with the top side");
             _playerController.Simulated(true);
             _playerController.IsInJail = false;
-        }
-
-        if (_playerController.IsInJail)
-        {
-            _playerController.transform.Translate(0, -0.5f * Time.deltaTime, 0);
-            transform.Translate(0, -0.5f * Time.deltaTime, 0);
-        }
-        
-        if (GameManager.instance.currentGameState == GameManager.GameState.PLAY)
-        {
-            if(IsDownAndInvisible())
-                _objectPoolItem.CleanUp();
+            FindObjectOfType<Light2D>().color = new Color(1f, 1f, 1f, 0f);
+            CleanUp();
         }
     }
 
     private bool IsDownAndInvisible()
     {
-        Vector3 myPos = transform.position;
-        Vector3 playerPos = PlayerController.instance.transform.position;
-        float threshold = 30f;
-        
-        return Vector2.Distance(myPos, playerPos) > threshold && myPos.y < playerPos.y;
-    }
+        float myY = transform.position.y;
+        float playerY = PlayerController.instance.transform.position.y;
+        float threshold = 20f;
 
+        float distance = Mathf.Abs(myY - playerY); // Distance along the Y-axis
+        
+        return distance > threshold && myY < playerY;
+    }
+    
     private IEnumerator MovePlayerToCenter(GameObject gameObject, Action onComplete) {
         Vector2 startingPosition = gameObject.transform.position;
         while (_currentRePositionTime < rePositionTime) {
@@ -88,5 +103,30 @@ public class JailBubble : MonoBehaviour {
         }
 
         onComplete?.Invoke();
+    }
+    
+    public void CleanUp()
+    {
+        if (_objectPoolItem == null)
+        {
+            Debug.LogError($"Bubble {gameObject.name} has no ObjectPoolItem reference!");
+            Destroy(gameObject);
+            return;
+        }
+
+        if (_objectPoolItem.isBeingCleanedUp)
+        {
+            Debug.LogWarning($"{gameObject.name} is already being cleaned up!");
+            return;
+        }
+
+        _objectPoolItem.isBeingCleanedUp = true;
+        _playerController = null;
+        _currentRePositionTime = 0;
+        
+        Debug.Log($"Returning {gameObject.name} to pool.");
+        _objectPoolItem.CleanUp();
+        
+        _objectPoolItem.isBeingCleanedUp = false;
     }
 }

@@ -63,11 +63,11 @@ public class ProcGenController : MonoBehaviour
         
         if (Math.Abs(playerPos.position.y - _maxY) <= MaxSpawnRadiusProximity && !_isGenerating)
         {
-            Debug.Log("GOT TO THE TOP! Reloading bubbles");
+            //Debug.Log("GOT TO THE TOP! Reloading bubbles");
 
             var initialIteration = (int) Math.Ceiling(maxYOffset + _maxY + infiniteMargin);
-            Debug.Log($"NEW ITERATIONS WILL START FROM: {initialIteration}");
-            Debug.Log($"Which means that it will start from {Random.Range(minYOffset, maxYOffset) * initialIteration}");
+            //Debug.Log($"NEW ITERATIONS WILL START FROM: {initialIteration}");
+            //Debug.Log($"Which means that it will start from {Random.Range(minYOffset, maxYOffset) * initialIteration}");
             
             InitializeBubbles(initialIteration: initialIteration);
         }
